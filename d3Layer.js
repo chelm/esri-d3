@@ -10,6 +10,8 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       if (options.projection) this._project = options.projection;
      
       this._styles = options.styles || [];
+      this._attrs = options.attrs || [];
+      this._events = options.events || [];
 
       this._path = options.path || d3.geo.path();
       this.path = this._path.projection( self._project );
@@ -52,18 +54,30 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
           .attr('d', self.path );
 
       this._styles.forEach(function( s, i ) { 
-        self._style(s);
+        self.style(s);
+      });
+
+      this._attrs.forEach(function( s, i ) {
+        self.attr(s);
+      });
+
+      this._events.forEach(function( s, i ) {
+        self.event(s);
       });
 
       this._bind();
     },
 
-    _style: function( s ){
+    style: function( s ){
       this._paths().style(s.key, s.value);
     },
 
-    _attr: function( a ){
+    attr: function( a ){
       this._paths().attr(a.key, a.value);
+    },
+
+    event: function( e ){
+      this._paths().on(e.type, e.fn);
     },
 
     _reset: function(){

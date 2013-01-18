@@ -20,6 +20,10 @@
         fill: #08c;
         stroke: #fff;
         stroke-width:1.5px;
+        opacity: 0.5;
+      }
+      path#Arizona {
+        fill: #FF0;
       }
       #map {
         position:absolute;
@@ -56,7 +60,10 @@
         
         layer = new modules.d3Layer('us-states.json', {
           styles: [
-            { key: 'fill', value: '#555'}
+            //{ key: 'fill', value: '#555'}
+          ],
+          attrs: [
+            { key: 'id', value: function(d){ return d.properties.name; }}
           ] 
         });
         map.addLayer(layer);
