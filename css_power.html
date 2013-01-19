@@ -83,25 +83,15 @@
     
     <script src="http://servicesbeta.esri.com/jsapi/arcgis/3.2/"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script>    
-      // Helper Functions
-      function normalizeName(n) { return n.replace(/ /g,""); };
-      function css(selector, property, value) {
-          for (var i=0; i<document.styleSheets.length;i++) {//Loop through all styles
-              //Try add rule
-              try { document.styleSheets[i].insertRule(selector+ ' {'+property+':'+value+'}', document.styleSheets[i].cssRules.length);
-              } catch(err) {try { document.styleSheets[i].addRule(selector, property+':'+value);} catch(err) {}}//IE
-          }
-      }
-      // end Helper Functions
-      </script> 
       
       <script>
+      function normalizeName(n) { return n.replace(/ /g,""); };
+
       dojo.require("esri.map");
       dojo.require("modules.d3Layer");
       dojo.ready(function(){
   
-        var initExtent = new esri.geometry.Extent({"xmin":-132,"ymin":20,"xmax":-60,"ymax":50,"spatialReference":{"wkid":4326}});
+        var initExtent = new esri.geometry.Extent({"xmin":-152,"ymin":10,"xmax":-60,"ymax":70,"spatialReference":{"wkid":4326}});
         map = new esri.Map("map",{
           extent:esri.geometry.geographicToWebMercator(initExtent)
         });
@@ -114,16 +104,6 @@
             { key: 'id', value: function(d){ return normalizeName(d.properties.name); }},
             { key: 'class', value: function(d){ return 'state ' + normalizeName(d.properties.name); }}
           ]
-          // Events way
-          // ,events: [{
-          //   type: 'mouseover', fn: function(){
-          //     d3.selectAll('.' + this.id).attr('class', function(d){ return 'over state ' + d.properties.name; });
-          //   }
-          // },{
-          //   type: 'mouseout', fn: function(){
-          //     d3.selectAll('.' + this.id).attr('class', function(d){ return 'state ' + d.properties.name; });
-          //   }
-          // }] 
         });
         map.addLayer(layer);
  
@@ -135,20 +115,14 @@
               .attr('id', function(d){ return 'state' + normalizeName(d.properties.name); })
               .attr('class', function(d){ return 'state ' + normalizeName(d.properties.name); })
               .text(function(d){ return d.properties.name; })
-              .on('mouseover', function(){ d3.selectAll('.' + this.id).attr('class', function(d){ return 'over state ' + normalizeName(d.properties.name); }) })
-              .on('mouseout', function(){ d3.selectAll('.' + this.id).attr('class', function(d){ return 'state ' + normalizeName(d.properties.name); }) })
               
           var states = document.querySelectorAll(".state")
           for( var i = states.length-1; i>=0; i--) {
               dojo.connect(states[i], "mouseover", function(evt) {
-                // CSS way
-                // css('.' + this.id, 'fill', '#F08')
-                // Javascript way
                 d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
                   return 'over state ' + normalizeName(d.properties.name); });
               });
               dojo.connect(states[i], "mouseout", function(evt) {
-                // css('.' + this.id, 'fill', '#008')
                 d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
                   return 'state ' + normalizeName(d.properties.name); });
               });
