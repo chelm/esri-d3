@@ -115,18 +115,18 @@
               .attr('id', function(d){ return 'state' + normalizeName(d.properties.name); })
               .attr('class', function(d){ return 'state ' + normalizeName(d.properties.name); })
               .text(function(d){ return d.properties.name; })
+
+          
+          d3.selectAll('.state')
+            .on('mouseover', function(){
+              d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
+                return 'over state ' + normalizeName(d.properties.name); });
+            })
+            .on('mouseout', function(){
+              d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
+                return 'state ' + normalizeName(d.properties.name); });
+            })
               
-          var states = document.querySelectorAll(".state")
-          for( var i = states.length-1; i>=0; i--) {
-              dojo.connect(states[i], "mouseover", function(evt) {
-                d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
-                  return 'over state ' + normalizeName(d.properties.name); });
-              });
-              dojo.connect(states[i], "mouseout", function(evt) {
-                d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
-                  return 'state ' + normalizeName(d.properties.name); });
-              });
-          };              
         });
       });
     </script>
