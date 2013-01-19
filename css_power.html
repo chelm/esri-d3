@@ -40,27 +40,27 @@
       }
 
 
-      .state[data-num > 0]{
+      path[data-num = "0"]{
         fill: rgb(255, 255, 204);         
       } 
 
-      .state[data-num > 10]{
+      path[data-num = "1"]{
         fill: rgb(199, 233, 180);         
       }
 
-      .state[data-num > 20]{
+      path[data-num = "2"]{
         fill: rgb(65, 182, 196);         
       }
 
-      .state[data-num > 30]{
+      path[data-num = "3"]{
         fill: rgb(29, 145, 192);     
       }
     
-      .state[data-num > 40]{
+      path[data-num = "4"]{
         fill: rgb(34, 94, 168);         
       }
 
-      .state[data-num > 50]{
+      path[data-num = "5"]{
         fill: rgb(12, 44, 132);         
       }
 
@@ -87,6 +87,10 @@
       dojo.require("esri.map");
       dojo.require("modules.d3Layer");
       dojo.ready(function(){
+
+        classes = d3.scale.ordinal()
+          .domain(d3.range([0,10,20,30,40,50]))
+          .range([1,2,3,4,5]);
   
         var initExtent = new esri.geometry.Extent({"xmin":-132,"ymin":20,"xmax":-60,"ymax":50,"spatialReference":{"wkid":4326}});
         map = new esri.Map("map",{
@@ -98,6 +102,7 @@
         
         layer = new modules.d3Layer('us-states.json', {
           attrs: [
+            //{ key: 'data-num', value: function(d){ return classes(Math.floor(Math.random()*50)); }},
             { key: 'id', value: function(d){ return d.properties.name; }},
             { key: 'class', value: function(d){ return 'state ' + d.properties.name; }}
           ],
@@ -126,6 +131,25 @@
         });
 
       });
+
+      function grow(){
+        layer._paths().attr('data-val', function(d){
+          var el = d3.select('path#'+this.id);
+          try { 
+            var v = (el) ? el.attr('data-val') : null;
+          } catch(e) {
+            var v = false;
+          }
+          if (v) {
+            var nval = parseInt(v) + Math.floor(Math.random()*10);
+          } else {
+            var nval = Math.floor(Math.random()*10);
+          }
+          el.attr('data-num', classes( nval ));
+          return nval;
+        });
+
+      }
     </script>
   </head>
   <body class="tundra">

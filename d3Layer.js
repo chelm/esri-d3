@@ -14,6 +14,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this._events = options.events || [];
 
       this._path = options.path || d3.geo.path();
+      //this.path = this._path.projection( self._project );
       this.path = this._path.projection( self._project );
     
       // load features
