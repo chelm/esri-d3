@@ -120,8 +120,18 @@
               .attr('class', function(d){ return 'state ' + normalizeName(d.properties.name); })
               .text(function(d){ return d.properties.name; })
 
-          
+          // This is kind of a cool way to do it 
           d3.selectAll('.state')
+            .on('mouseover', function(){
+              d3.select('body').append('style')
+                .attr('id', this.id.replace(/state/,'')+'_style')
+                .text( '.'+ this.id.replace(/state/,'') + '{ fill: #F08; font-size: 1.2em; color: #F08; }');
+            })
+            .on('mouseout', function(){
+              d3.select('#'+this.id.replace(/state/,'')+'_style').remove();
+            })
+
+          /*d3.selectAll('.state')
             .on('mouseover', function(){
               d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
                 return 'over state ' + normalizeName(d.properties.name); });
@@ -129,7 +139,7 @@
             .on('mouseout', function(){
               d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
                 return 'state ' + normalizeName(d.properties.name); });
-            })
+            })*/
               
         });
       });
