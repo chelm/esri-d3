@@ -1,5 +1,7 @@
 dojo.provide("modules.d3Layer");
 
+dojo.require("esri.layers.graphics");
+
 dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
 
     constructor: function(url, options) {
