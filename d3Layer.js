@@ -14,7 +14,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this._events = options.events || [];
 
       this._path = options.path || d3.geo.path();
-      //this.path = this._path.projection( self._project );
       this.path = this._path.projection( self._project );
     
       // load features
@@ -53,6 +52,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       p.data( this.geojson.features )
         .enter().append( "path" )
           .attr('d', self.path );
+          //.attr('d', function(d) { console.log(d3.geo.circle(d)); return d3.geo.circle(); }); //d3.geo.path().centroid(d); });
 
       this._styles.forEach(function( s, i ) { 
         self.style(s);
