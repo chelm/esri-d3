@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Esri <3 d3js</title>
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+    <style type="text/css">
+      html, body { 
+        height: 100%; width: 100%;
+        margin: 0; padding: 0;
+      } 
+      body{
+        background-color: #fff; overflow:hidden; 
+        font-family: sans-serif;
+      }
+      path {
+        fill: #08c;
+        stroke: #fff;
+        stroke-width:1px;
+        opacity: 1;
+      }
+      #map {
+        position:absolute;
+        width: 100%;
+        height: 100%;
+      } 
+
+      path[data-cat="1"]{
+        fill: rgb(247,251,255);
+      }
+      path[data-cat="2"]{
+        fill: rgb(8,81,156);
+      }
+      path[data-cat="3"]{
+        fill: rgb(33,113,181);
+      }
+      path[data-cat="4"]{
+        fill: rgb(66,146,198);
+      }
+      path[data-cat="5"]{
+        fill: rgb(107,174,214);
+      }
+      path[data-cat="6"]{
+        fill: rgb(158,202,225);
+      }
+      path[data-cat="7"]{
+        fill: rgb(198,219,239);
+      }
+      path[data-cat="8"]{
+        fill: rgb(222,235,247);
+      }
+      path[data-cat="9"]{
+        fill: rgb(8,48,107);
+      }
+
+    </style>
+    <script>
+      var dojoConfig = {
+        parseOnLoad: true,
+        packages: [{
+          "name": "modules",
+          "location": location.origin + location.pathname.replace(/\/[^/]+$/, '')
+        }]
+      };
+    </script>
+   
+    <script src="js/codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="js/codemirror/lib/codemirror.css"> 
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script>
+
+      var cat = d3.scale.quantile()
+        .domain([0, 50])
+        .range(["1", "2", "3", "4", "5", "6", "7", "8", "9"]);
+
+      var path = d3.geo.path();
+
+      dojo.require("esri.map");
+      dojo.require("modules.d3Layer");
+      dojo.ready(function(){
+  
+        var initExtent = new esri.geometry.Extent({"xmin":-132,"ymin":20,"xmax":-60,"ymax":50,"spatialReference":{"wkid":4326}});
+        map = new esri.Map("map",{
+          extent:esri.geometry.geographicToWebMercator(initExtent)
+        });
+
+        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");
+        map.addLayer(basemap); 
+        
+        layer = new modules.d3Layer('us-counties.json', {
+          attrs: [
+            { key: 'data-cat', value: function(d){ console.log(path.area(d)); return Math.round(cat(path.area(d))); } }
+          ]
+        });
+
+        map.addLayer(layer);
+ 
+        dojo.connect(layer, "onLoad", function(lyr) {
+          console.log("layer loaded", lyr);
+          lyr._render();
+          var myCodeMirror = CodeMirror(document.getElementById('css'));
+        });
+
+
+    
+      });
+    </script>
+  </head>
+  <body class="tundra">
+    <div id="map"></div>
+    <div id="css"></div>
+  </body>
+</html>
