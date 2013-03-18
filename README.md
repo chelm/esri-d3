@@ -28,9 +28,11 @@ This example adds some interaction to each state. The point is to show an altern
 ## Usage
 
 First include d3.js:
+
     <script src="http://d3js.org/d3.v3.min.js"></script>
 
 Second add a geojson layer. You can specify arrays or key/values for styles and attrs on created SVG elements:  
+
     <script>
       var layer = new modules.d3Layer('/path/to/a/geojson', {
         styles: [
