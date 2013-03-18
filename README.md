@@ -15,6 +15,7 @@ This here is to showcase the value in using d3.js in addition to the Esri JS API
 
 ## Usage
 
+  <script>
     var layer = new modules.d3Layer('/path/to/a/geojson', {
       styles: [
         { key: 'fill', value: '#555'},
@@ -26,4 +27,5 @@ This here is to showcase the value in using d3.js in addition to the Esri JS API
       ] 
     });
     map.addLayer(layer);
+  </script>
 
