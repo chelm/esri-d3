@@ -7,7 +7,7 @@ This here is to showcase the value in using d3.js in addition to the Esri JS API
 
 ## Examples
 
-## CSS Styling
+### CSS Styling
 [http://chelm.github.com/esri-d3/index.html](http://chelm.github.com/esri-d3/index.html)
 
 ### Cross-Interaction
@@ -15,17 +15,15 @@ This here is to showcase the value in using d3.js in addition to the Esri JS API
 
 ## Usage
 
-    tell application "somethin"
-        vat layer = new modules.d3Layer('/path/to/a/geojson', {
-          styles: [
-            { key: 'fill', value: '#555'},
-            { key: 'stroke', value: '#F00'}
-          ],
-          attrs: [
-            { key: 'id', value: function(d){ return d.properties.name; }},
-            { key: 'class', value: 'my-class'}
-          ] 
-        });
-        map.addLayer(layer);
+  var layer = new modules.d3Layer('/path/to/a/geojson', {
+    styles: [
+      { key: 'fill', value: '#555'},
+      { key: 'stroke', value: '#F00'}
+    ],
+    attrs: [
+      { key: 'id', value: function(d){ return d.properties.name; }},
+      { key: 'class', value: 'my-class'}
+    ] 
+  });
+  map.addLayer(layer);
 
-    end tell
