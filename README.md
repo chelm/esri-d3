@@ -12,14 +12,17 @@ A lot of the features that D3 brings mapping (CSS, SVG, transitions, etc) the Es
 
 ### CSS Styling
 This shows how to use a very simple CSS based style to highlight a state: 
+
 [http://chelm.github.com/esri-d3/index.html](http://chelm.github.com/esri-d3/index.html)
 
 ### CSS Classification via HTML data attributes
 This shows how we can data-* attributes on our elements as a way to assign categories to data. The classication rules are defined in the CSS instead of directly on the elements themselves: 
+
 [http://chelm.github.com/esri-d3/rules.html](http://chelm.github.com/esri-d3/rules.html)
 
 ### Cross-Interaction
 This example adds some interaction to each state. The point is to show an alternative CSS based approach to cross data selection and interaction.
+
 [http://chelm.github.com/esri-d3/css.html](http://chelm.github.com/esri-d3/css.html)
 
 ## Usage

@@ -21,19 +21,17 @@
         stroke-width:1.5px;
         opacity: 0.5;
       }
-      /*path#Arizona {
+      path#Arizona {
         fill: #FF0;
-      }*/
+      }
+      path#Colorado {
+        fill: #F49;
+      }
       #map {
         position:absolute;
-        width: 75%;
+        width: 100%;
         height: 100%;
       } 
-      #css {
-        position:absolute;
-        width: 25%;
-        height: 100%;
-      }
     </style>
     <script>
       var dojoConfig = {
@@ -45,8 +43,6 @@
       };
     </script>
    
-    <script src="js/codemirror/lib/codemirror.js"></script>
-    <link rel="stylesheet" href="js/codemirror/lib/codemirror.css"> 
     <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script>
@@ -75,7 +71,6 @@
         dojo.connect(layer, "onLoad", function(lyr) {
           console.log("layer loaded", lyr);
           lyr._render();
-          var myCodeMirror = CodeMirror(document.getElementById('css'));
         });
 
 
@@ -85,6 +80,5 @@
   </head>
   <body class="tundra">
     <div id="map"></div>
-    <div id="css"></div>
   </body>
 </html>
