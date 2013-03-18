@@ -15,15 +15,15 @@ This here is to showcase the value in using d3.js in addition to the Esri JS API
 
 ## Usage
 
-  var layer = new modules.d3Layer('/path/to/a/geojson', {
-    styles: [
-      { key: 'fill', value: '#555'},
-      { key: 'stroke', value: '#F00'}
-    ],
-    attrs: [
-      { key: 'id', value: function(d){ return d.properties.name; }},
-      { key: 'class', value: 'my-class'}
-    ] 
-  });
-  map.addLayer(layer);
+    var layer = new modules.d3Layer('/path/to/a/geojson', {
+      styles: [
+        { key: 'fill', value: '#555'},
+        { key: 'stroke', value: '#F00'}
+      ],
+      attrs: [
+        { key: 'id', value: function(d){ return d.properties.name; }},
+        { key: 'class', value: 'my-class'}
+      ] 
+    });
+    map.addLayer(layer);
 
