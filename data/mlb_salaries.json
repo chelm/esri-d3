@@ -1,11 +1,12 @@
-{
-  "Arizona Diamondbacks" : {
+{ "Features" : [
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-112.066662,33.444799]
     },
     "properties" : {
       "team" : {
+        "name" : "Arizona Diamondbacks",
         "payroll" : 89000000,
         "ballpark" : "Chase Field",
         "city" : "Phoenix",
@@ -37,13 +38,14 @@
       }
     }
   },
-  "Atlanta Braves" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-84.38839,33.734708]
     },
     "properties" : {
       "team" : {
+        "name" : "Atlanta Braves",
         "payroll" : 85000000,
         "ballpark" : "Turner Field",
         "city" : "Atlanta",
@@ -78,13 +80,14 @@
       }
     }
   }, 
-  "Baltimore Orioles" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-76.620214,39.284072]
     },
     "properties" : {
       "team" : {
+        "name" : "Baltimore Orioles",
         "payroll" : 92000000,
         "ballpark" : "Oriole Park",
         "city" : "Baltimore",
@@ -119,13 +122,14 @@
       }
     }
   },
-  "Boston Red Sox" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-71.09817,42.346251]
     },
     "properties" : {
       "team" : {
+        "name" : "Boston Red Sox",
         "payroll" : 150000000,
         "ballpark" : "Fenway Park",
         "city" : "Boston",
@@ -159,13 +163,14 @@
       }
     }
   },
-  "Chicago White Sox" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-87.633788,41.829347]
     },
     "properties" : {
       "team" : {
+        "name" : "Chicago White Sox",
         "payroll" : 117000000,
         "ballpark" : "U.S. Cellular Field",
         "city" : "Chicago",
@@ -196,13 +201,14 @@
       }
     }
   },
-  "Chicago Cubs" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-87.656447,41.947304]
     },
     "properties" : {
       "team" : {
+        "name" : "Chicago Cubs",
         "payroll" : 103000000,
         "ballpark" : "Wrigley Field",
         "city" : "Chicago",
@@ -234,13 +240,14 @@
       }
     }
   },
-  "Cleveland Indians" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-81.685236,41.495966]
     },
     "properties" : {
       "team" : {
+        "name" : "Cleveland Indians",
         "payroll" : 71000000,
         "ballpark" : "Progressive Field",
         "city" : "Cleveland",
@@ -271,13 +278,14 @@
       }
     }
   },
-  "Cincinnati Reds" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-84.506965,39.097437]
     },
     "properties" : {
       "team" : {
+        "name" : "Cincinnati Reds",
         "payroll" : 107000000,
         "ballpark" : "Great American Ballpark",
         "city" : "Cincinnati",
@@ -312,13 +320,14 @@
       }
     }
   },
-  "Detroit Tigers" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-83.048487,42.338753]
     },
     "properties" : {
       "team" : {
+        "name" : "Detroit Tigers",
         "payroll" : 150000000,
         "ballpark" : "Comerica Park",
         "city" : "Detroit",
@@ -353,13 +362,14 @@
       }
     }
   },
-  "Colorado Rockies" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-104.994281,39.756436]
     },
     "properties" : {
       "team" : {
+        "name" : "Colorado Rockies",
         "payroll" : 73000000,
         "ballpark" : "Coors Field",
         "city" : "Denver",
@@ -394,13 +404,14 @@
       }
     }
   },
-  "Houston Astros" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-95.357294,29.756816]
     },
     "properties" : {
       "team" : {
+        "name" : "Houston Astros",
         "payroll" : 32000000,
         "ballpark" : "Minute Maid Park",
         "city" : "Houston",
@@ -423,13 +434,14 @@
       }
     }
   },
-  "Los Angeles Dodgers" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-118.240974,34.07322]
     },
     "properties" : {
       "team" : {
+        "name" : "Los Angeles Dodgers",
         "payroll" : 213000000,
         "ballpark" : "Dodger Stadium",
         "city" : "Los Angeles",
@@ -464,13 +476,14 @@
       }
     }
   },
-  "Kansas City Royals" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-94.480619,39.051019]
     },
     "properties" : {
       "team" : {
+        "name" : "Kansas City Royals",
         "payroll" : 78000000,
         "ballpark" : "Kauffman Stadium",
         "city" : "Kansas City",
@@ -505,13 +518,14 @@
       }
     }
   },
-  "Miami Marlins" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-80.22148,25.778142]
     },
     "properties" : {
       "team" : {
+        "name" : "Miami Marlins",
         "payroll" : 45000000,
         "ballpark" : "Marlins Park",
         "city" : "Miami",
@@ -535,13 +549,14 @@
       }
     }
   },
-  "Los Angeles Angels" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-117.883043,33.80003]
     },
     "properties" : {
       "team" : {
+        "name" : "Los Angeles Angels",
         "payroll" : 152000000,
         "ballpark" : "Angel Stadium",
         "city" : "Anaheim",
@@ -572,13 +587,14 @@
       }
     }
   },
-  "Milwaukee Brewers" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-87.972043,43.028758]
     },
     "properties" : {
       "team" : {
+        "name" : "Milwaukee Brewers",
         "payroll" : 72000000,
         "ballpark" : "Miller Park",
         "city" : "Milwaukee",
@@ -602,13 +618,14 @@
       }
     }
   },
-  "Minnesota Twins" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-93.278282,44.981739]
     },
     "properties" : {
       "team" : {
+        "name" : "Minnesota Twins",
         "payroll" : 80000000,
         "ballpark" : "Target Field",
         "city" : "Minnesota",
@@ -637,13 +654,14 @@
       }
     }
   },
-  "New York Mets" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-73.846399,40.756477]
     },
     "properties" : {
       "team" : {
+        "name" : "New York Mets",
         "payroll" : 84000000,
         "ballpark" : "Citi Field",
         "city" : "New York",
@@ -671,13 +689,14 @@
       }
     }
   },
-  "New York Yankees" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-73.92842,40.829234]
     },
     "properties" : {
       "team" : {
+        "name" : "New York Yankees",
         "payroll" : 210000000,
         "ballpark" : "Yankee Stadium",
         "city" : "Bronx",
@@ -711,13 +730,14 @@
       }
     }
   }, 
-  "Philadelphia Phillies" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-75.166483,39.905654]
     },
     "properties" : {
       "team" : {
+        "name" : "Philadelphia Phillies",
         "payroll" : 158000000,
         "ballpark" : "Citizens Bank Park",
         "city" : "Philadelphia",
@@ -745,13 +765,14 @@
       }
     }
   },
-  "Oakland Athletics" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-122.201571,37.751554]
     },
     "properties" : {
       "team" : {
+        "name" : "Oakland Athletics",
         "payroll" : 60000000,
         "ballpark" : "O.co Coliseum",
         "city" : "Oakland",
@@ -783,13 +804,14 @@
       }
     }
   },
-  "Pittsburgh Pirates" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-80.005666,40.446947]
     },
     "properties" : {
       "team" : {
+        "name" : "Pittsburgh Pirates",
         "payroll" : 55000000,
         "ballpark" : "PNC Park",
         "city" : "Pittsburgh",
@@ -823,13 +845,14 @@
       }
     }
   }, 
-  "Seattle Mariners" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-122.332635,47.591231]
     },
     "properties" : {
       "team" : {
+        "name" : "Seattle Mariners",
         "payroll" : 71000000,
         "ballpark" : "Safeco Field",
         "city" : "Seattle", 
@@ -864,13 +887,14 @@
       }
     }
   }, 
-  "San Diego Padres" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-117.155617,32.705664]
     },
     "properties" : {
       "team" : {
+        "name" : "San Diego Padres",
         "payroll" : 65000000,
         "ballpark" : "PETCO Park",
         "city" : "San Diego",
@@ -903,13 +927,14 @@
       }
     }
   },
-  "Tampa Bay Rays" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-82.65152,27.768507]
     },
     "properties" : {
       "team" : {
+        "name" : "Tampa Bay Rays",
         "payroll" : 60000000,
         "ballpark" : "Tropicana Field",
         "city" : "Tampa",
@@ -944,13 +969,14 @@
       }
     }
   },
-  "San Francisco Giants" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-122.390871,37.778143]
     },
     "properties" : {
       "team" : {
+        "name" : "San Francisco Giants",
         "payroll" : 137000000,
         "ballpark" : "AT&T Park",
         "city" : "San Francisco",
@@ -984,13 +1010,14 @@
       }
     }
   },
-  "Texas Rangers" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-97.081266,32.749833]
     },
     "properties" : {
       "team" : {
+        "name" : "Texas Rangers",
         "payroll" : 120000000,
         "ballpark" : "Rangers Ballpark in Arlington",
         "city" : "Arlington",
@@ -1022,13 +1049,14 @@
       }
     }
   },
-  "Sain Louis Cardinals" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-90.19405,38.623978]
     },
     "properties" : {
       "team" : {
+        "name" : "Sain Louis Cardinals",
         "payroll" : 115000000,
         "ballpark" : "Busch Stadium",
         "city" : "St Louis",
@@ -1062,13 +1090,14 @@
       }
     }
   },
-  "Toronto Blue Jays" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-79.390611,43.642349]
     },
     "properties" : {
       "team" : {
+        "name" : "Toronto Blue Jays",
         "payroll" : 115000000,
         "ballpark" : "Rogers Stadium",
         "city" : "Toronto",
@@ -1103,13 +1132,14 @@
       }
     }
   },
-  "Washington Nationals" : {
+  {
     "geometry" : {
       "type": "Point",
       "coordinates" : [-77.007283,38.873068]
     },
     "properties" : {
       "team" : {
+        "name" : "Washington Nationals",
         "payroll" : 113000000,
         "ballpark" : "Nationals Park",
         "city" : "Washington",
@@ -1142,4 +1172,5 @@
       }
     }
   }
+  ]
 }
