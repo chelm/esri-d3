@@ -20,6 +20,18 @@
         width: 100%;
         height: 100%;
       }
+      circle.node {
+        cursor: pointer;
+        stroke: #000;
+        stroke-width: .5px;
+      }
+      
+      line.link {
+        fill: none;
+        stroke: #444;
+        stroke-width: 1px;
+      }
+
 
     </style>
     <script>
@@ -34,6 +46,7 @@
    
     <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    
     <script>
 
       dojo.require("esri.map");
@@ -54,7 +67,8 @@
                 .attr('width', 1000)
                 .attr('height', 1000);
           var defs = svg.append('svg:defs');
-
+          
+          /*
           logos.forEach(function( logo ){
             defs.append('svg:pattern')
                 .attr('id', logo.team)
@@ -69,34 +83,141 @@
                 .attr('width', 48)
                 .attr('height', 48); //transform="translate(-35.5,-31)
           }); 
-       
+          */
           var layer = new modules.d3Layer('data/mlb_salaries.json', {
             attrs: [
-              { key: 'r', value: '27' },
+              { key: 'r', value: '6' },
               { key: 'class', value: 'park' }
             ],
             events: [
               { key: 'mouseover', value: select}
             ],
             styles: [
-              { key: 'fill', value: function( d ){ return 'url(#'+d.properties.team.name+') no-repeat'; } }
+              //{ key: 'fill', value: function( d ){ return 'url(#'+d.properties.team.name+') no-repeat'; } }
+              { key: 'fill', value: '#002e5d' }
             ],
             type: 'circle'
           }); 
           map.addLayer(layer);
- 
+          
+          
+          //root.y = circle.cy.baseVal.value;
           dojo.connect(layer, "onLoad", function(lyr) {
             lyr._render();
+            
+            dojo.connect(this, 'hover', function(graphic, circle) {
+              var w = 1280,
+                h = 800,
+                node,
+                link,
+                root;
+              
+              //a little flare for the circles...!
+              d3.select(circle)
+                .transition()
+                  .attr('r', 20)
+                  .duration(600)
+                .transition()
+                  .attr('r', 6)
+                  .duration(300)
+              
+              //REMOVE all 
+              d3.select('.hover-force')
+                //.remove()
+              
+              var force = d3.layout.force()
+                .on("tick", tick)
+                .charge(function(d) { return d._children ? -d.salary / 100 : -30; })
+                .linkDistance(function(d) { return d.target._children ? 80 : 40; })
+                .size([(circle.cx.baseVal.value + 350), (circle.cy.baseVal.value + 250)]);
+              
+              var vis = d3.select("svg").append("svg:svg")
+                .attr("width", w)
+                .attr("height", h)
+                .attr('class', 'hover-force');
+              
+                root = graphic.properties;
+                root.fixed = true;
+                root.x = circle.cx.baseVal.value;
+                root.y = circle.cy.baseVal.value;
+                update();
+              
+              function update() {
+                var nodes = flatten(root),
+                  links = d3.layout.tree().links(nodes);
+                
+                force
+                  .nodes(nodes)
+                  .links(links)
+                  .start();
+              
+                link = vis.selectAll("line.link")
+                  .data(links, function(d) { return d.target.id; });
+              
+                link.enter().insert("svg:line", ".node")
+                  .attr("class", "link")
+                  .attr("x1", function(d) { return d.source.x; })
+                  .attr("y1", function(d) { return d.source.y; })
+                  .attr("x2", function(d) { return d.target.x; })
+                  .attr("y2", function(d) { return d.target.y; });
+              
+                link.exit().remove();
+              
+                node = vis.selectAll("circle.node")
+                  .data(nodes, function(d) { return d.id; })
+                  .style("fill", color);
+            
+                node.transition()
+                  .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.salary) / 500; })
+              
+                node.enter().append("svg:circle")
+                  .attr("class", "node")
+                  .attr("cx", function(d) { return d.x; })
+                  .attr("cy", function(d) { return d.y; })
+                  .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.salary) / 500; })
+                  .style("fill", color);
+              
+                node.exit().remove();
+              }
+              
+              function tick() {
+                link.attr("x1", function(d) { return d.source.x; })
+                  .attr("y1", function(d) { return d.source.y; })
+                  .attr("x2", function(d) { return d.target.x; })
+                  .attr("y2", function(d) { return d.target.y; });
+              
+                node.attr("cx", function(d) { return d.x; })
+                  .attr("cy", function(d) { return d.y; });
+              }
+              
+              // MLB colors FTW
+              function color(d) {
+                return d._children ? "#d50032" : d.children ? "#FFF" : "#d50032";
+              }
+              
+              // Returns a list of all nodes under the root.
+              function flatten(root) {
+                var nodes = [], i = 0;
+              
+                function recurse(node) {
+                  if (node.children) node.salary = node.children.reduce(function(p, v) { return p + recurse(v); }, 0);
+                  if (!node.id) node.id = ++i;
+                  nodes.push(node);
+                  return node.salary;
+                }
+              
+                root.salary = recurse(root);
+                return nodes;
+}
+            });
+            
+            //do something on exit
+            dojo.connect(this, 'exit', function(graphic, circle) {
+              
+            });
           });
 
-          d3.selectAll('.park')
-            .on('mouseover', function(){
-              console.log('mouseover');
-            })
-
         })
-
-    
       });
 
       function select( ){
