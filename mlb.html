@@ -20,6 +20,10 @@
         width: 100%;
         height: 100%;
       }
+      .park{
+        stroke: #fff;
+        stroke-width:4px;
+      }
       circle.node {
         cursor: pointer;
         stroke: #000;
@@ -50,6 +54,14 @@
     <script src="http://d3js.org/d3.v3.min.js"></script>
     
     <script>
+
+      var payroll = d3.scale.quantile()
+        .domain([50000000, 200000000])
+        .range([5, 10, 15, 20, 25, 30])
+
+      var salary = d3.scale.quantile()
+        .domain([200000, 20000000])
+        .range([5, 10, 15, 20, 25, 30])
 
       dojo.require("esri.map");
       dojo.require("modules.d3Layer");
@@ -88,7 +100,7 @@
           */
           layer = new modules.d3Layer('data/mlb_salaries.json', {
             attrs: [
-              { key: 'r', value: '6' },
+              { key: 'r', value: function(d){ return payroll(d.properties.team.payroll); } },
               { key: 'class', value: 'park' }
             ],
             events: [
@@ -106,6 +118,9 @@
           //root.y = circle.cy.baseVal.value;
           dojo.connect(layer, "onLoad", function(lyr) {
             lyr._render();
+                
+            var vis = layer._element();
+                vis.attr('class', 'hover-force');
             
             dojo.connect(this, 'select', function(graphic, circle) {
               var w = 1280,
@@ -115,24 +130,19 @@
                 root;
               
               //a little flare for the circles...!
-              d3.select(circle)
+              /*d3.select(circle)
                 .transition()
                   .attr('r', 20)
                   .duration(600)
                 .transition()
                   .attr('r', 6)
-                  .duration(300)
+                  .duration(300)*/
               
               var force = d3.layout.force()
                 .on("tick", tick)
                 .charge(function(d) { return d._children ? -d.salary / 100 : -30; })
                 .linkDistance(function(d) { return d.target._children ? 80 : 30; })
                 .size([(circle.cx.baseVal.value + 350), (circle.cy.baseVal.value + 250)]);
-              
-              /*var vis = d3.select("svg").append("svg:svg")
-                .attr("width", w)
-                .attr("height", h)
-                .attr('class', 'hover-force');*/
                 
                 var vis = layer._element().append("svg:svg")
                   .attr('class', 'hover-force')
@@ -149,6 +159,7 @@
                   links = d3.layout.tree().links(nodes);
                 
                 var frc = force
+                  .gravity(.04) 
                   .charge(-100)
                   .nodes(nodes)
                   .links(links)
@@ -172,19 +183,19 @@
                   
             
                 node.transition()
-                  .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.salary) / 500; })
+                  .attr("r", function(d) { return d.children ? 4.5 : salary(d.salary)})
               
                 console.log('here?!')
                 node.enter().append("svg:circle")
                   .attr("class", "node")
                   .attr("cx", function(d) { return d.x; })
                   .attr("cy", function(d) { return d.y; })
-                  .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.salary) / 500; })
+                  .attr("r", function(d) { return d.children ? 4.5 : salary(d.salary) })
                   .style("fill", color)
                   .on('click', function(d) {
                     d3.select('#' + d.team.city).remove();
                   });
-              
+                  
                 node.exit().remove();
               }
               
