@@ -6,7 +6,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Arizona Diamondbacks",
+        "name" : "Diamondbacks",
         "payroll" : 89000000,
         "ballpark" : "Chase Field",
         "city" : "Phoenix",
@@ -45,13 +45,13 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Atlanta Braves",
+        "name" : "Braves",
         "payroll" : 85000000,
         "ballpark" : "Turner Field",
         "city" : "Atlanta",
         "league" : "National League",
         "year" : "2013",
-        "name": "Atlanta Braves"
+        "name": "Braves"
       },
       "salaries" : {
         "Dan Uggla" : { "position" : "Second Base", "salary"  : 13146942 },
@@ -88,7 +88,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Baltimore Orioles",
+        "name" : "Orioles",
         "payroll" : 92000000,
         "ballpark" : "Oriole Park",
         "city" : "Baltimore",
@@ -130,7 +130,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Boston Red Sox",
+        "name" : "RedSox",
         "payroll" : 150000000,
         "ballpark" : "Fenway Park",
         "city" : "Boston",
@@ -171,7 +171,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Chicago White Sox",
+        "name" : "WhiteSox",
         "payroll" : 117000000,
         "ballpark" : "U.S. Cellular Field",
         "city" : "Chicago",
@@ -209,7 +209,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Chicago Cubs",
+        "name" : "Cubs",
         "payroll" : 103000000,
         "ballpark" : "Wrigley Field",
         "city" : "Chicago",
@@ -248,7 +248,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Cleveland Indians",
+        "name" : "Indians",
         "payroll" : 71000000,
         "ballpark" : "Progressive Field",
         "city" : "Cleveland",
@@ -286,7 +286,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Cincinnati Reds",
+        "name" : "Reds",
         "payroll" : 107000000,
         "ballpark" : "Great American Ballpark",
         "city" : "Cincinnati",
@@ -328,7 +328,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Detroit Tigers",
+        "name" : "Tigers",
         "payroll" : 150000000,
         "ballpark" : "Comerica Park",
         "city" : "Detroit",
@@ -375,7 +375,7 @@
         "city" : "Denver",
         "league" : "National League",
         "year" : "2013",
-        "name": "Colorado Rockies"
+        "name": "Rockies"
       },
       "salaries" : {
         "Jorge De La Rosa" : { "position" : "Starting Pitcher", "salary"  : 11000000 },
@@ -412,7 +412,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Houston Astros",
+        "name" : "Astros",
         "payroll" : 32000000,
         "ballpark" : "Minute Maid Park",
         "city" : "Houston",
@@ -442,7 +442,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Los Angeles Dodgers",
+        "name" : "Dodgers",
         "payroll" : 213000000,
         "ballpark" : "Dodger Stadium",
         "city" : "Los Angeles",
@@ -484,7 +484,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Kansas City Royals",
+        "name" : "Royals",
         "payroll" : 78000000,
         "ballpark" : "Kauffman Stadium",
         "city" : "Kansas City",
@@ -526,7 +526,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Miami Marlins",
+        "name" : "Marlins",
         "payroll" : 45000000,
         "ballpark" : "Marlins Park",
         "city" : "Miami",
@@ -557,7 +557,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Los Angeles Angels",
+        "name" : "Angels",
         "payroll" : 152000000,
         "ballpark" : "Angel Stadium",
         "city" : "Anaheim",
@@ -595,7 +595,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Milwaukee Brewers",
+        "name" : "Brewers",
         "payroll" : 72000000,
         "ballpark" : "Miller Park",
         "city" : "Milwaukee",
@@ -626,7 +626,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Minnesota Twins",
+        "name" : "Twins",
         "payroll" : 80000000,
         "ballpark" : "Target Field",
         "city" : "Minnesota",
@@ -662,7 +662,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "New York Mets",
+        "name" : "Mets",
         "payroll" : 84000000,
         "ballpark" : "Citi Field",
         "city" : "New York",
@@ -697,7 +697,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "New York Yankees",
+        "name" : "Yankees",
         "payroll" : 210000000,
         "ballpark" : "Yankee Stadium",
         "city" : "Bronx",
@@ -738,7 +738,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Philadelphia Phillies",
+        "name" : "Phillies",
         "payroll" : 158000000,
         "ballpark" : "Citizens Bank Park",
         "city" : "Philadelphia",
@@ -773,7 +773,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Oakland Athletics",
+        "name" : "Athletics",
         "payroll" : 60000000,
         "ballpark" : "O.co Coliseum",
         "city" : "Oakland",
@@ -812,7 +812,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Pittsburgh Pirates",
+        "name" : "Pirates",
         "payroll" : 55000000,
         "ballpark" : "PNC Park",
         "city" : "Pittsburgh",
@@ -853,7 +853,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Seattle Mariners",
+        "name" : "Mariners",
         "payroll" : 71000000,
         "ballpark" : "Safeco Field",
         "city" : "Seattle", 
@@ -895,7 +895,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "San Diego Padres",
+        "name" : "Padres",
         "payroll" : 65000000,
         "ballpark" : "PETCO Park",
         "city" : "San Diego",
@@ -935,7 +935,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Tampa Bay Rays",
+        "name" : "Rays",
         "payroll" : 60000000,
         "ballpark" : "Tropicana Field",
         "city" : "Tampa",
@@ -977,7 +977,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "San Francisco Giants",
+        "name" : "Giants",
         "payroll" : 137000000,
         "ballpark" : "AT&T Park",
         "city" : "San Francisco",
@@ -1018,7 +1018,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Texas Rangers",
+        "name" : "Rangers",
         "payroll" : 120000000,
         "ballpark" : "Rangers Ballpark in Arlington",
         "city" : "Arlington",
@@ -1057,7 +1057,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Sain Louis Cardinals",
+        "name" : "Cardinals",
         "payroll" : 115000000,
         "ballpark" : "Busch Stadium",
         "city" : "St Louis",
@@ -1098,7 +1098,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Toronto Blue Jays",
+        "name" : "BlueJays",
         "payroll" : 115000000,
         "ballpark" : "Rogers Stadium",
         "city" : "Toronto",
@@ -1140,7 +1140,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "Washington Nationals",
+        "name" : "Nationals",
         "payroll" : 113000000,
         "ballpark" : "Nationals Park",
         "city" : "Washington",

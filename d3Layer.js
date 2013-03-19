@@ -9,11 +9,16 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this.inherited(arguments); 
 
       this.url = url;
+
+      this.type = options.type || 'path';
+
       if (options.projection) this._project = options.projection;
      
       this._styles = options.styles || [];
       this._attrs = options.attrs || [];
       this._events = options.events || [];
+
+      
 
       this._path = options.path || d3.geo.path();
       this.path = this._path.projection( self._project );
@@ -51,11 +56,21 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     _render: function(){
       var self = this;
       var p = this._paths();
-      
-      p.data( this.geojson.features )
-        .enter().append( "path" )
-          .attr('d', function(d) { console.log(d, self.path(d)); return self.path(d) });
-          //.attr('d', function(d) { console.log(d3.geo.circle(d)); return d3.geo.circle(); }); //d3.geo.path().centroid(d); });
+    
+      if ( this.type == 'circle' ) {
+
+        p.data( this.geojson.features )
+          .enter().append( this.type )
+          .attr("cx", function(d, i) { return self._project(d.geometry.coordinates)[0]; })
+          .attr("cy", function(d, i) { return self._project(d.geometry.coordinates)[1]; })
+          .attr('r', 10);
+
+      } else {
+
+        p.data( this.geojson.features )
+          .enter().append( this.type )
+          .attr('d', path);
+      }  
 
       this._styles.forEach(function( s, i ) { 
         self.style(s);
@@ -81,11 +96,19 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
 
     event: function( e ){
+      console.log(e)
       this._paths().on(e.type, e.fn);
     },
 
     _reset: function(){
-      this._paths().attr('d', this.path)
+      var self = this;
+      if (this.type == 'circle'){
+        this._paths()
+          .attr("cx", function(d, i) { return self._project(d.geometry.coordinates)[0]; })
+          .attr("cy", function(d, i) { return self._project(d.geometry.coordinates)[1]; })
+      } else {
+        this._paths().attr('d', this.path)
+      }
     },
 
     _element: function(){
@@ -93,7 +116,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
 
     _paths: function(){
-      return this._element().selectAll( "path" );
+      return this._element().selectAll( this.type );
     }
 
 

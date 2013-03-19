@@ -15,17 +15,11 @@
         background-color: #fff; overflow:hidden; 
         font-family: sans-serif;
       }
-      path {
-        fill: #08c;
-        stroke: #fff;
-        stroke-width:1px;
-        opacity: .75;
-      }
       #map {
         position:absolute;
         width: 100%;
         height: 100%;
-      } 
+      }
 
     </style>
     <script>
@@ -55,25 +49,59 @@
         map.addLayer(basemap); 
 
         d3.json('data/mlb_logos.json', function( logos ){
-          console.log( logos );
-        })
-        
-        layer = new modules.d3Layer('data/mlb_salaries.json', {
-          styles: [
-            { key: 'fill', value: '#f5d' }
-          ]
-        });
+          var svg = d3.select( 'body' )
+                .append('svg')
+                .attr('width', 1000)
+                .attr('height', 1000);
+          var defs = svg.append('svg:defs');
 
-        map.addLayer(layer);
+          logos.forEach(function( logo ){
+            defs.append('svg:pattern')
+                .attr('id', logo.team)
+                .attr('patternUnits', 'userSpaceOnUse')
+                .attr('width', 68)//logo.sym.width+'')
+                .attr('height', 68) //logo.sym.height+'')
+                .append('svg:image')
+                .attr('xlink:href', 'http://bearpanther.com/mlb-layer/divisions-web-mercator/'+logo.sym.url)
+                //.attr('x', '10%')
+                //.attr('y', '10%')
+                .attr('transform', 'translate(0,0)')
+                .attr('width', 48)
+                .attr('height', 48); //transform="translate(-35.5,-31)
+          }); 
+       
+          var layer = new modules.d3Layer('data/mlb_salaries.json', {
+            attrs: [
+              { key: 'r', value: '27' },
+              { key: 'class', value: 'park' }
+            ],
+            events: [
+              { key: 'mouseover', value: select}
+            ],
+            styles: [
+              { key: 'fill', value: function( d ){ return 'url(#'+d.properties.team.name+') no-repeat'; } }
+            ],
+            type: 'circle'
+          }); 
+          map.addLayer(layer);
  
-        dojo.connect(layer, "onLoad", function(lyr) {
-          console.log("layer loaded", lyr);
-          lyr._render();
-        });
+          dojo.connect(layer, "onLoad", function(lyr) {
+            lyr._render();
+          });
 
+          d3.selectAll('.park')
+            .on('mouseover', function(){
+              console.log('mouseover');
+            })
+
+        })
 
     
       });
+
+      function select( ){
+        console.log( arguments )
+      }
     </script>
   </head>
   <body class="tundra">
