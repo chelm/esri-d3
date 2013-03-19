@@ -64,6 +64,9 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
           .attr("cx", function(d, i) { return self._project(d.geometry.coordinates)[0]; })
           .attr("cy", function(d, i) { return self._project(d.geometry.coordinates)[1]; })
           .attr('r', 10)
+            .on('click', function(d) {
+              self.select(d, this)
+            })
             .on('mouseover', function(d){
               self.hover(d, this);
             })
@@ -125,7 +128,8 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
     
     hover: function() {},
-    exit: function() {}
+    exit: function() {},
+    select: function() {}
 
 
 });

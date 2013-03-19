@@ -31,7 +31,9 @@
         stroke: #444;
         stroke-width: 1px;
       }
-
+      .park {
+        cursor:pointer;
+      }
 
     </style>
     <script>
@@ -105,7 +107,7 @@
           dojo.connect(layer, "onLoad", function(lyr) {
             lyr._render();
             
-            dojo.connect(this, 'hover', function(graphic, circle) {
+            dojo.connect(this, 'select', function(graphic, circle) {
               var w = 1280,
                 h = 800,
                 node,
@@ -121,20 +123,17 @@
                   .attr('r', 6)
                   .duration(300)
               
-              //REMOVE all 
-              d3.select('.hover-force')
-                //.remove()
-              
               var force = d3.layout.force()
                 .on("tick", tick)
                 .charge(function(d) { return d._children ? -d.salary / 100 : -30; })
-                .linkDistance(function(d) { return d.target._children ? 80 : 40; })
+                .linkDistance(function(d) { return d.target._children ? 80 : 30; })
                 .size([(circle.cx.baseVal.value + 350), (circle.cy.baseVal.value + 250)]);
               
               var vis = d3.select("svg").append("svg:svg")
                 .attr("width", w)
                 .attr("height", h)
-                .attr('class', 'hover-force');
+                .attr('class', 'hover-force')
+                .attr('id', graphic.properties.team.city);
               
                 root = graphic.properties;
                 root.fixed = true;
@@ -166,6 +165,7 @@
                 node = vis.selectAll("circle.node")
                   .data(nodes, function(d) { return d.id; })
                   .style("fill", color);
+                  
             
                 node.transition()
                   .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.salary) / 500; })
@@ -175,7 +175,10 @@
                   .attr("cx", function(d) { return d.x; })
                   .attr("cy", function(d) { return d.y; })
                   .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.salary) / 500; })
-                  .style("fill", color);
+                  .style("fill", color)
+                  .on('click', function(d) {
+                    d3.select('#' + d.team.city).remove();
+                  });
               
                 node.exit().remove();
               }
