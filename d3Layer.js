@@ -63,8 +63,13 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
           .enter().append( this.type )
           .attr("cx", function(d, i) { return self._project(d.geometry.coordinates)[0]; })
           .attr("cy", function(d, i) { return self._project(d.geometry.coordinates)[1]; })
-          .attr('r', 10);
-
+          .attr('r', 10)
+            .on('mouseover', function(d){
+              self.hover(d, this);
+            })
+            .on('mouseout', function(d){
+              self.exit(d, this);
+            })
       } else {
 
         p.data( this.geojson.features )
@@ -117,7 +122,10 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
 
     _paths: function(){
       return this._element().selectAll( this.type );
-    }
+    },
+    
+    hover: function() {},
+    exit: function() {}
 
 
 });
