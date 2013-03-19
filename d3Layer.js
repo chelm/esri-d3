@@ -27,6 +27,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       d3.json( this.url, function( geojson ){
         self.geojson = geojson;
         self.bounds = d3.geo.bounds( self.geojson );
+        console.log(geojson, self.bounds)
         self.loaded = true;
         // TODO the onLoad event fires too soon, have to wait until the DOM is created
         setTimeout(function(){ 
@@ -53,7 +54,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       
       p.data( this.geojson.features )
         .enter().append( "path" )
-          .attr('d', self.path );
+          .attr('d', function(d) { console.log(d, self.path(d)); return self.path(d) });
           //.attr('d', function(d) { console.log(d3.geo.circle(d)); return d3.geo.circle(); }); //d3.geo.path().centroid(d); });
 
       this._styles.forEach(function( s, i ) { 
