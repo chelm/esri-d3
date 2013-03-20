@@ -130,7 +130,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "RedSox",
+        "name" : "Red Sox",
         "payroll" : 150000000,
         "ballpark" : "Fenway Park",
         "city" : "Boston",
@@ -171,7 +171,7 @@
     },
     "properties" : {
       "team" : {
-        "name" : "WhiteSox",
+        "name" : "White Sox",
         "payroll" : 117000000,
         "ballpark" : "U.S. Cellular Field",
         "city" : "Chicago",

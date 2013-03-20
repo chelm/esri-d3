@@ -61,7 +61,7 @@
         layer = new modules.d3Layer('data/mlb_salaries.json', {
           attrs: [
             { key: 'r', value: function(d){ return payroll(d.properties.team.payroll); } },
-            { key: 'id', value: function(d){ return d.properties.team.name; } },
+            { key: 'id', value: function(d){ return d.properties.team.name.replace(/\s/g,''); } },
             { key: 'class', value: 'park' }
           ],
           type: 'circle'
@@ -88,6 +88,9 @@
 
             d3.selectAll('.park')
               .on('mouseover', function( dot ){
+                
+                var img = '<img src="http://bearpanther.com/mlb-layer/divisions-web-mercator/images/logos/' + dot.properties.team.name.replace(/\s/g,'') + '.png"></img>';
+                console.log('img', img)
                 d3.select('#team').style('display', 'block');
                 d3.select('#salary').html(' ');
                 d3.select('#intro').remove();
@@ -95,7 +98,7 @@
                 var str = getAmount(num.toString().length);
                 
                 d3.select('#payroll')
-                  .html('<h1>' + dot.properties.team.name + '</h1>' + '$' + addCommas(dot.properties.team.payroll).split(',')[0] + ' ' +str);
+                  .html('<h1>' + dot.properties.team.name + img + '</h1>' + '$' + addCommas(dot.properties.team.payroll).split(',')[0] + ' ' +str);
               })
               .on('mouseout', function( dot ){
                 setTimeout(function(){
@@ -139,6 +142,7 @@
             
             d3.selectAll('.park')
               .on('click', function( dot ){
+
                 if (d3.select('#' + dot.properties.team.city.replace(' ',''))[0][0] ) {
                   d3.select('#' + dot.properties.team.city.replace(' ','')).style('display', 'block');
                 } else { 
@@ -159,7 +163,7 @@
                   var nodes = flatten(root),
                     links = d3.layout.tree().links(nodes);
                     
-                  forces[dot.properties.team.name] = force
+                  forces[ dot.properties.team.name.replace(/\s/g,'') ] = force
                       .gravity(.01) 
                       .charge(-75)
                       .linkStrength(5)
@@ -182,7 +186,7 @@
                       .data(nodes, function(d) { return d.id; })
                       .enter().append("svg:circle")
                         .attr("class", function(d) { return (d.children) ? "root node" : "node" })
-                        .attr("id", function(d) { return (d.children) ? d.team.name+'_root' : null })
+                        .attr("id", function(d) { return (d.children) ? d.team.name.replace(/\s/g,'')+'_root' : null })
                         .attr("cx", function(d) { return d.x; })
                         .attr("cy", function(d) { return d.y; })
                         .attr("r", function(d) { return d.children ? payroll(d.team.payroll) : salary(d.salary) })
