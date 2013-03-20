@@ -25,11 +25,13 @@
 
       var payroll = d3.scale.quantile()
         .domain([50000000, 200000000])
-        .range([5, 10, 15, 20, 25])
+        .range([5, 10, 15, 20, 25]);
 
       var salary = d3.scale.quantile()
         .domain([200000, 20000000])
-        .range([5, 10, 15, 20])
+        .range([5, 10, 15, 20]);
+
+      var forces = {};
 
       dojo.require("esri.map");
       dojo.require("modules.d3Layer");
@@ -59,12 +61,27 @@
         layer = new modules.d3Layer('data/mlb_salaries.json', {
           attrs: [
             { key: 'r', value: function(d){ return payroll(d.properties.team.payroll); } },
+            { key: 'id', value: function(d){ return d.properties.team.name; } },
             { key: 'class', value: 'park' }
           ],
           type: 'circle'
         }); 
         map.addLayer(layer);
-          
+
+        dojo.connect( map, "onZoomEnd", function(){
+          setTimeout(function(){
+          d3.selectAll('.park')[0].forEach(function( park ){
+            var root = d3.select('#'+park.id+'_root');
+            if (root[0][0]){
+              root.data()[0].x = park.cx.baseVal.value;
+              root.data()[0].px = park.cx.baseVal.value;
+              root.data()[0].y = park.cy.baseVal.value;
+              root.data()[0].py = park.cy.baseVal.value;
+              forces[park.id].start();
+            }
+          }); 
+          },10);
+        });
           
         dojo.connect(layer, "onLoad", function(lyr) {
             lyr._render();
@@ -89,7 +106,6 @@
                 }, 3000);
               });
 
-            
             //add commas
             function addCommas(nStr) {
               nStr += '';
@@ -142,8 +158,8 @@
                 var nodes = flatten(root),
                   links = d3.layout.tree().links(nodes);
                   
-                force
-                    .gravity(.06) 
+                forces[dot.properties.team.name] = force
+                    .gravity(.01) 
                     .charge(-75)
                     .linkStrength(5)
                     .linkDistance(50)
@@ -151,7 +167,7 @@
                     .nodes(nodes)
                     .links(links)
                     .start();
-                
+
                 vis.selectAll("line.link")
                   .data(links, function(d) { return d.target.id; })
                   .enter().insert("svg:line", ".node")
@@ -160,11 +176,12 @@
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
                     .attr("y2", function(d) { return d.target.y; });
-                
+               
                 vis.selectAll("circle.node")
                     .data(nodes, function(d) { return d.id; })
                     .enter().append("svg:circle")
-                      .attr("class", "node")
+                      .attr("class", function(d) { return (d.children) ? "root node" : "node" })
+                      .attr("id", function(d) { return (d.children) ? d.team.name+'_root' : null })
                       .attr("cx", function(d) { return d.x; })
                       .attr("cy", function(d) { return d.y; })
                       .attr("r", function(d) { return d.children ? payroll(d.team.payroll) : salary(d.salary) })
@@ -185,12 +202,13 @@
                     
                 
                 function tick() {
+      
                   vis.selectAll("line.link")
                     .attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
                     .attr("y2", function(d) { return d.target.y; });
-                
+               
                   vis.selectAll("circle.node")
                     .attr("cx", function(d) { return d.x; })
                     .attr("cy", function(d) { return d.y; });

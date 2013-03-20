@@ -9,6 +9,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this.inherited(arguments); 
 
       this.url = url;
+      //this.id = options.id || ( Math.round( Math.random() * 100000 ).toString( 16 ) ) + ( new Date() ).getTime().toString(16);
 
       this.type = options.type || 'path';
 
@@ -17,8 +18,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this._styles = options.styles || [];
       this._attrs = options.attrs || [];
       this._events = options.events || [];
-
-      
 
       this._path = options.path || d3.geo.path();
       this.path = this._path.projection( self._project );
@@ -32,7 +31,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       d3.json( this.url, function( geojson ){
         self.geojson = geojson;
         self.bounds = d3.geo.bounds( self.geojson );
-        console.log(geojson, self.bounds)
         self.loaded = true;
         // TODO the onLoad event fires too soon, have to wait until the DOM is created
         setTimeout(function(){ 
@@ -61,6 +59,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
 
         p.data( this.geojson.features )
           .enter().append( this.type )
+          .attr('class', this.id)
           .attr("cx", function(d, i) { return self._project(d.geometry.coordinates)[0]; })
           .attr("cy", function(d, i) { return self._project(d.geometry.coordinates)[1]; })
           .attr('r', 10)
@@ -77,7 +76,8 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
 
         p.data( this.geojson.features )
           .enter().append( this.type )
-          .attr('d', path);
+          .attr('class', this.id)
+          .attr('d', this.path);
       }  
 
       this._styles.forEach(function( s, i ) { 
@@ -100,7 +100,14 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
 
     attr: function( a ){
-      this._paths().attr(a.key, a.value);
+      if (a.key == "class"){
+        this._paths().attr('class', function(d) { 
+          var val = d3.select(this).attr('class') + " " + a.value;
+          return val; 
+        });
+      } else {
+        this._paths().attr(a.key, a.value);
+      }
     },
 
     event: function( e ){
@@ -123,12 +130,10 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
 
     _paths: function(){
-      return this._element().selectAll( this.type );
+      return this._element().selectAll( this.type+"."+this.id );
     },
     
     hover: function() {},
     exit: function() {},
     select: function() {}
-
-
 });
