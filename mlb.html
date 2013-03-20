@@ -185,7 +185,6 @@
                 node.transition()
                   .attr("r", function(d) { return d.children ? 4.5 : salary(d.salary)})
               
-                console.log('here?!')
                 node.enter().append("svg:circle")
                   .attr("class", "node")
                   .attr("cx", function(d) { return d.x; })
