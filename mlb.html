@@ -101,15 +101,22 @@
             d3.selectAll('.park')
               .on('mouseover', function( dot ){
                 
-                var img = '<img src="http://bearpanther.com/mlb-layer/divisions-web-mercator/images/logos/' + dot.properties.team.name.replace(/\s/g,'') + '.png"></img>';
-                d3.select('#team').style('display', 'block');
-                d3.select('#salary').html(' ');
+                var img = '<img src="img/' + dot.properties.team.name.replace(/\s/g,'') + '.gif"></img>';
+                
+                d3.select('#payroll').style('display', 'block');
+                d3.select('#salary').style('display', 'none');
                 d3.select('#intro').remove();
                 var num = dot.properties.team.payroll;
                 var str = getAmount(num.toString().length);
                 
-                d3.select('#payroll')
-                  .html('<h1>' + dot.properties.team.name + img + '</h1>' + '$' + addCommas(dot.properties.team.payroll).split(',')[0] + ' ' +str);
+                d3.select('#team-logo')
+                  .html(img)
+                d3.select('#team-name')
+                  .html('<h1>' + dot.properties.team.name + '</h1>');
+                d3.select('#team-payroll')
+                  .html('$' + addCommas(dot.properties.team.payroll).split(',')[0] + ' ' +str);
+                d3.select('#team-payroll-rank')
+                 .html( 10 )
               })
               .on('mouseout', function( dot ){
                 setTimeout(function(){
@@ -211,8 +218,14 @@
                             var num = dot.salary;
                             var str = getAmount(num.toString().length);
                             
-                            d3.select('#salary')
-                              .html('<h1>' + dot.name +'</h1>'+ '$' + addCommas(dot.salary).split(',')[0] + ' ' + str);
+                            d3.select('#salary').style('display', 'block');
+                            
+                            d3.select('#player-name')
+                              .html('<h1>' + dot.name +'</h1>');
+                            
+                            d3.select('#player-salary')
+                              .html('$' + addCommas(dot.salary).split(',')[0] + ' ' + str);
+                            
                           }
                         });
                 } 
@@ -259,13 +272,32 @@
   <body class="tundra">
     <div id="map"></div>
     <div id="team">
-      <div id="intro">
-        <span>
-          <span style="color: #d50032">MLB</span> payrolls projected <br /> to exceed <span class="number">3 billion</span> dollars in 2013. 
-        </span>
+      <div id="team-inner">
+        <div id="intro">
+          <span>
+            <span style="color: #d50032">MLB</span> payrolls projected <br /> to exceed <span class="number">3 billion</span> dollars in 2013. 
+          </span>
+        </div>
+        <div id="payroll" class="info">
+          <div id="team-logo"></div>
+          <div id="team-name"></div>
+          <div id="payroll-container">
+            <div id="payroll-titles">
+              <span id="payroll-title">Payroll</span>
+              <span id="rank-title">Rank</span>
+            </div>
+            <div id="team-payroll"></div>
+            <div id="team-payroll-rank"></div>
+          </div>
+        </div>
+        <div id="salary" class="info">
+          <div id="player-name"></div>
+          <div id="salary-titles">
+            <span id="salary-title">Salary</span>
+          </div>
+          <div id="player-salary"></div>
+        </div>
       </div>
-      <div id="payroll" class="info"></div>
-      <div id="salary" class="info"></div>
     </div>
   </body>
 </html>
