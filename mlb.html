@@ -125,7 +125,16 @@
           type: 'circle'
         }); 
         map.addLayer(layer);
-          
+
+        /*dojo.connect( map, "onPan", function(){
+          console.log(d3.selectAll('.root'));
+        });*/
+
+        /*dojo.connect( map, "onZoomEnd", function(){
+          d3.selectAll('.root')
+            .attr('cx')
+            .attr('cy');
+        });*/
           
         dojo.connect(layer, "onLoad", function(lyr) {
             lyr._render();
@@ -190,11 +199,11 @@
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
                     .attr("y2", function(d) { return d.target.y; });
-                
+               
                 vis.selectAll("circle.node")
                     .data(nodes, function(d) { return d.id; })
                     .enter().append("svg:circle")
-                      .attr("class", "node")
+                      .attr("class", function(d) { return (d.children) ? "root node" : "node" })
                       .attr("cx", function(d) { return d.x; })
                       .attr("cy", function(d) { return d.y; })
                       .attr("r", function(d) { return d.children ? payroll(d.team.payroll) : salary(d.salary) })
@@ -211,6 +220,7 @@
                     
                 
                 function tick() {
+      
                   vis.selectAll("line.link")
                     .attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })

@@ -129,6 +129,4 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     hover: function() {},
     exit: function() {},
     select: function() {}
-
-
 });
