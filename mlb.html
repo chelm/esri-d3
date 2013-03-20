@@ -20,14 +20,42 @@
         width: 100%;
         height: 100%;
       }
+      #team {
+        position:absolute;
+        right: 5px;
+        top:5px;
+        border-radius: 5px; 
+        border: 1px solid #555;
+        /*width: 450px;
+        height: 200px;*/
+        background: #fff;
+        display:none;
+        font-size:36px;
+        text-align: center;
+        padding:20px;
+      }
+      .info {
+        height: 100px;
+      }
+
+      #payroll {
+        border-bottom: 1px solid #555;
+      }
+
       .park{
-        stroke: #fff;
+        fill: #fff;
         stroke-width:4px;
+        stroke: #002e5d;
+        opacity: .75;
       }
       circle.node {
-        cursor: pointer;
         stroke: #000;
         stroke-width: .5px;
+      }
+      circle.node:hover {
+        cursor: pointer;
+        stroke: #FFF;
+        stroke-width: 4px;
       }
       
       line.link {
@@ -35,7 +63,9 @@
         stroke: #444;
         stroke-width: 1px;
       }
-      .park {
+      .park:hover {
+        stroke: #d50032;
+        stroke-width: 6px;
         cursor:pointer;
       }
 
@@ -57,194 +87,187 @@
 
       var payroll = d3.scale.quantile()
         .domain([50000000, 200000000])
-        .range([5, 10, 15, 20, 25, 30])
+        .range([5, 10, 15, 20, 25])
 
       var salary = d3.scale.quantile()
         .domain([200000, 20000000])
-        .range([5, 10, 15, 20, 25, 30])
+        .range([5, 10, 15, 20])
 
       dojo.require("esri.map");
       dojo.require("modules.d3Layer");
+
       dojo.ready(function(){
   
-        var initExtent = new esri.geometry.Extent({"xmin":-132,"ymin":20,"xmax":-60,"ymax":50,"spatialReference":{"wkid":4326}});
+        var initExtent = new esri.geometry.Extent({
+          "xmin":-132,
+          "ymin":20,
+          "xmax":-60,
+          "ymax":50,
+          "spatialReference": { 
+            "wkid": 4326
+          }
+        });
+
         map = new esri.Map("map",{
           extent:esri.geometry.geographicToWebMercator(initExtent)
         });
 
-        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");
+        var basemap = new esri.layers.ArcGISTiledMapServiceLayer(
+          "http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");
+
         map.addLayer(basemap); 
 
-        d3.json('data/mlb_logos.json', function( logos ){
-          /*var svg = d3.select( 'body' )
-                .append('svg')
-                .attr('width', 1000)
-                .attr('height', 1000);
-          var defs = svg.append('svg:defs');*/
-          
-          /*
-          logos.forEach(function( logo ){
-            defs.append('svg:pattern')
-                .attr('id', logo.team)
-                .attr('patternUnits', 'userSpaceOnUse')
-                .attr('width', 68)//logo.sym.width+'')
-                .attr('height', 68) //logo.sym.height+'')
-                .append('svg:image')
-                .attr('xlink:href', 'http://bearpanther.com/mlb-layer/divisions-web-mercator/'+logo.sym.url)
-                //.attr('x', '10%')
-                //.attr('y', '10%')
-                .attr('transform', 'translate(0,0)')
-                .attr('width', 48)
-                .attr('height', 48); //transform="translate(-35.5,-31)
-          }); 
-          */
-          layer = new modules.d3Layer('data/mlb_salaries.json', {
-            attrs: [
-              { key: 'r', value: function(d){ return payroll(d.properties.team.payroll); } },
-              { key: 'class', value: 'park' }
-            ],
-            events: [
-              { key: 'mouseover', value: select}
-            ],
-            styles: [
-              //{ key: 'fill', value: function( d ){ return 'url(#'+d.properties.team.name+') no-repeat'; } }
-              { key: 'fill', value: '#002e5d' }
-            ],
-            type: 'circle'
-          }); 
-          map.addLayer(layer);
+        layer = new modules.d3Layer('data/mlb_salaries.json', {
+          attrs: [
+            { key: 'r', value: function(d){ return payroll(d.properties.team.payroll); } },
+            { key: 'class', value: 'park' }
+          ],
+          type: 'circle'
+        }); 
+        map.addLayer(layer);
           
           
-          //root.y = circle.cy.baseVal.value;
-          dojo.connect(layer, "onLoad", function(lyr) {
+        dojo.connect(layer, "onLoad", function(lyr) {
             lyr._render();
-                
-            var vis = layer._element();
-                vis.attr('class', 'hover-force');
+
+            d3.selectAll('.park')
+              .on('mouseover', function( dot ){
+                d3.select('#team').style('display', 'block');
+                d3.select('#salary').html(' ')
+                d3.select('#payroll')
+                  .html(dot.properties.team.name + '<br/>' + '$' + addCommas(dot.properties.team.payroll));
+              })
+              .on('mouseout', function( dot ){
+                setTimeout(function(){
+                  //d3.select('#team').style('display', 'none');
+                  //d3.select('#payroll')
+                  //  .html('');
+
+                }, 3000);
+              });
+
+            d3.selectAll('.node')
+              .on('mouseover', function( dot ){
+                console.log(dot)
+                d3.select('#salary')
+                  .html(dot.properties.team.name + '<br/>' + dot.properties.team.payroll);
+              })
             
-            dojo.connect(this, 'select', function(graphic, circle) {
-              var w = 1280,
-                h = 800,
-                node,
-                link,
-                root;
-              
-              //a little flare for the circles...!
-              /*d3.select(circle)
-                .transition()
-                  .attr('r', 20)
-                  .duration(600)
-                .transition()
-                  .attr('r', 6)
-                  .duration(300)*/
-              
-              var force = d3.layout.force()
-                .on("tick", tick)
-                .charge(function(d) { return d._children ? -d.salary / 100 : -30; })
-                .linkDistance(function(d) { return d.target._children ? 80 : 30; })
-                .size([(circle.cx.baseVal.value + 350), (circle.cy.baseVal.value + 250)]);
+            //add commas
+            function addCommas(nStr) {
+              nStr += '';
+              x = nStr.split('.');
+              x1 = x[0];
+              x2 = x.length > 1 ? '.' + x[1] : '';
+              var rgx = /(\d+)(\d{3})/;
+              while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+              }
+              return x1 + x2;
+            }
+            
+            d3.selectAll('.park')
+              .on('mouseup', function( dot ){
+        
+                var selected = d3.select(this)[0][0];
+
+                var force = d3.layout.force()
+                  .on("tick", tick)
+                  
+                var vis = lyr._element().append("g")
+                    .attr('class', 'hover-force')
+                    .attr('id', dot.properties.team.city.replace(' ', ''));
                 
-                var vis = layer._element().append("svg:svg")
-                  .attr('class', 'hover-force')
-                  .attr('id', graphic.properties.team.city);
-              
-                root = graphic.properties;
-                root.fixed = true;
-                root.x = circle.cx.baseVal.value;
-                root.y = circle.cy.baseVal.value;
-                update();
-              
-              function update() {
+                var root = dot.properties;
+                  root.fixed = true;
+                  root.x = selected.cx.baseVal.value;
+                  root.y = selected.cy.baseVal.value;
+                
                 var nodes = flatten(root),
                   links = d3.layout.tree().links(nodes);
+                  
+                force
+                    .gravity(.06) 
+                    .charge(-75)
+                    .linkStrength(5)
+                    .linkDistance(50)
+                    .size([700, 700])
+                    .nodes(nodes)
+                    .links(links)
+                    .start();
                 
-                var frc = force
-                  .gravity(.04) 
-                  .charge(-100)
-                  .nodes(nodes)
-                  .links(links)
-                  .start();
-              
-                link = vis.selectAll("line.link")
-                  .data(links, function(d) { return d.target.id; });
-              
-                link.enter().insert("svg:line", ".node")
-                  .attr("class", "link")
-                  .attr("x1", function(d) { return d.source.x; })
-                  .attr("y1", function(d) { return d.source.y; })
-                  .attr("x2", function(d) { return d.target.x; })
-                  .attr("y2", function(d) { return d.target.y; });
-              
-                link.exit().remove();
-              
-                node = vis.selectAll("circle.node")
-                  .data(nodes, function(d) { return d.id; })
-                  .style("fill", color);
-                  
-            
-                node.transition()
-                  .attr("r", function(d) { return d.children ? 4.5 : salary(d.salary)})
-              
-                node.enter().append("svg:circle")
-                  .attr("class", "node")
-                  .attr("cx", function(d) { return d.x; })
-                  .attr("cy", function(d) { return d.y; })
-                  .attr("r", function(d) { return d.children ? 4.5 : salary(d.salary) })
-                  .style("fill", color)
-                  .on('click', function(d) {
-                    d3.select('#' + d.team.city).remove();
-                  });
-                  
-                node.exit().remove();
-              }
-              
-              function tick() {
-                link.attr("x1", function(d) { return d.source.x; })
-                  .attr("y1", function(d) { return d.source.y; })
-                  .attr("x2", function(d) { return d.target.x; })
-                  .attr("y2", function(d) { return d.target.y; });
-              
-                node.attr("cx", function(d) { return d.x; })
-                  .attr("cy", function(d) { return d.y; });
-              }
-              
-              // MLB colors FTW
-              function color(d) {
-                return d._children ? "#d50032" : d.children ? "#FFF" : "#d50032";
-              }
-              
-              // Returns a list of all nodes under the root.
-              function flatten(root) {
-                var nodes = [], i = 0;
-              
-                function recurse(node) {
-                  if (node.children) node.salary = node.children.reduce(function(p, v) { return p + recurse(v); }, 0);
-                  if (!node.id) node.id = ++i;
-                  nodes.push(node);
-                  return node.salary;
+                vis.selectAll("line.link")
+                  .data(links, function(d) { return d.target.id; })
+                  .enter().insert("svg:line", ".node")
+                    .attr("class", "link")
+                    .attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+                
+                vis.selectAll("circle.node")
+                    .data(nodes, function(d) { return d.id; })
+                    .enter().append("svg:circle")
+                      .attr("class", "node")
+                      .attr("cx", function(d) { return d.x; })
+                      .attr("cy", function(d) { return d.y; })
+                      .attr("r", function(d) { return d.children ? payroll(d.team.payroll) : salary(d.salary) })
+                      .style("fill", color)
+                      .call(force.drag)
+                      .on('click', function(d) {
+                        if (d.team && d.team.city) d3.select('#' + d.team.city.replace(' ','')).remove();
+                      })
+                      .on('mouseover', function( dot ){
+                        if ( !dot.team ) {
+                          d3.select('#salary')
+                            .html(dot.name +'<br/>'+ '$' + addCommas(dot.salary));
+                        }
+                      });
+                    
+                
+                function tick() {
+                  vis.selectAll("line.link")
+                    .attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+                
+                  vis.selectAll("circle.node")
+                    .attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; });
                 }
-              
-                root.salary = recurse(root);
-                return nodes;
-}
-            });
-            
-            //do something on exit
-            dojo.connect(this, 'exit', function(graphic, circle) {
-              
+                
+                // MLB colors
+                function color(d) {
+                  return d._children ? "#d50032" : d.children ? "#FFF" : "#d50032";
+                }
+                
+                // Returns a list of all nodes under the root.
+                function flatten(root) {
+                  var nodes = [], i = 0;
+                
+                  function recurse(node) {
+                    if (node.children) node.salary = node.children.reduce(function(p, v) { return p + recurse(v); }, 0);
+                    if (!node.id) node.id = ++i;
+                    nodes.push(node);
+                    return node.salary;
+                  }
+                
+                  root.salary = recurse(root);
+                  return nodes;
+                }
+                
             });
           });
+        });
 
-        })
-      });
-
-      function select( ){
-        console.log( arguments )
-      }
     </script>
   </head>
   <body class="tundra">
     <div id="map"></div>
-    <div id="css"></div>
+    <div id="team">
+      <div id="payroll" class="info"></div>
+      <div id="salary" class="info"></div>
+    </div>
   </body>
 </html>
