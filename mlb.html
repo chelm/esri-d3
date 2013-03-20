@@ -5,71 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
     <title>Esri <3 d3js</title>
-    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
-    <style type="text/css">
-      html, body { 
-        height: 100%; width: 100%;
-        margin: 0; padding: 0;
-      } 
-      body{
-        background-color: #fff; overflow:hidden; 
-        font-family: sans-serif;
-      }
-      #map {
-        position:absolute;
-        width: 100%;
-        height: 100%;
-      }
-      #team {
-        position:absolute;
-        right: 5px;
-        top:5px;
-        border-radius: 5px; 
-        border: 1px solid #555;
-        /*width: 450px;
-        height: 200px;*/
-        background: #fff;
-        display:none;
-        font-size:36px;
-        text-align: center;
-        padding:20px;
-      }
-      .info {
-        height: 100px;
-      }
-
-      #payroll {
-        border-bottom: 1px solid #555;
-      }
-
-      .park{
-        fill: #fff;
-        stroke-width:4px;
-        stroke: #002e5d;
-        opacity: .75;
-      }
-      circle.node {
-        stroke: #000;
-        stroke-width: .5px;
-      }
-      circle.node:hover {
-        cursor: pointer;
-        stroke: #FFF;
-        stroke-width: 4px;
-      }
-      
-      line.link {
-        fill: none;
-        stroke: #444;
-        stroke-width: 1px;
-      }
-      .park:hover {
-        stroke: #d50032;
-        stroke-width: 6px;
-        cursor:pointer;
-      }
-
-    </style>
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css" />
+    <link rel="stylesheet" href="css/bootstrap.css"></link>
+    <link rel="stylesheet" href="css/mlb.css"></link>
     <script>
       var dojoConfig = {
         parseOnLoad: true,
@@ -107,16 +45,17 @@
             "wkid": 4326
           }
         });
-
+        
         map = new esri.Map("map",{
           extent:esri.geometry.geographicToWebMercator(initExtent)
         });
 
         var basemap = new esri.layers.ArcGISTiledMapServiceLayer(
           "http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");
+          //"http://services.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer");
 
         map.addLayer(basemap); 
-
+        
         layer = new modules.d3Layer('data/mlb_salaries.json', {
           attrs: [
             { key: 'r', value: function(d){ return payroll(d.properties.team.payroll); } },
@@ -133,9 +72,13 @@
             d3.selectAll('.park')
               .on('mouseover', function( dot ){
                 d3.select('#team').style('display', 'block');
-                d3.select('#salary').html(' ')
+                d3.select('#salary').html(' ');
+                d3.select('#intro').remove();
+                var num = dot.properties.team.payroll;
+                var str = getAmount(num.toString().length);
+                
                 d3.select('#payroll')
-                  .html(dot.properties.team.name + '<br/>' + '$' + addCommas(dot.properties.team.payroll));
+                  .html('<h1>' + dot.properties.team.name + '</h1>' + '$' + addCommas(dot.properties.team.payroll).split(',')[0] + ' ' +str);
               })
               .on('mouseout', function( dot ){
                 setTimeout(function(){
@@ -146,12 +89,6 @@
                 }, 3000);
               });
 
-            d3.selectAll('.node')
-              .on('mouseover', function( dot ){
-                console.log(dot)
-                d3.select('#salary')
-                  .html(dot.properties.team.name + '<br/>' + dot.properties.team.payroll);
-              })
             
             //add commas
             function addCommas(nStr) {
@@ -164,6 +101,25 @@
                 x1 = x1.replace(rgx, '$1' + ',' + '$2');
               }
               return x1 + x2;
+            }
+            
+            //get dollar amount text
+            function getAmount(dollar) {
+              console.log('len', dollar)
+              var amount;
+              switch( true ) {
+              case (dollar <= 6):
+                amount = "thousand";
+                break;
+              case (dollar <= 9):
+                amount = "million"
+                break;
+              case (dollar > 9 ):
+                amount = "billion"
+                break;
+              }
+              
+              return amount;
             }
             
             d3.selectAll('.park')
@@ -214,13 +170,16 @@
                       .attr("r", function(d) { return d.children ? payroll(d.team.payroll) : salary(d.salary) })
                       .style("fill", color)
                       .call(force.drag)
-                      .on('click', function(d) {
+                      .on('mousedown', function(d) {
                         if (d.team && d.team.city) d3.select('#' + d.team.city.replace(' ','')).remove();
                       })
                       .on('mouseover', function( dot ){
                         if ( !dot.team ) {
+                          var num = dot.salary;
+                          var str = getAmount(num.toString().length);
+                          
                           d3.select('#salary')
-                            .html(dot.name +'<br/>'+ '$' + addCommas(dot.salary));
+                            .html('<h1>' + dot.name +'</h1>'+ '$' + addCommas(dot.salary).split(',')[0] + ' ' + str);
                         }
                       });
                     
@@ -266,6 +225,11 @@
   <body class="tundra">
     <div id="map"></div>
     <div id="team">
+      <div id="intro">
+        <span>
+          <span style="color: #d50032">MLB</span> payrolls projected <br /> to exceed <span class="number">3 billion</span> dollars in 2013. 
+        </span>
+      </div>
       <div id="payroll" class="info"></div>
       <div id="salary" class="info"></div>
     </div>
