@@ -22,7 +22,38 @@
     <script src="http://d3js.org/d3.v3.min.js"></script>
     
     <script>
-
+      var ranks = {
+        "Astros" : 30, 
+        "Marlins" : 29,
+        "Pirates" :28,
+        "Athletics": 27,
+        "Rays" : 26, 
+        "Padres" : 25,
+        "Indians" : 24,
+        "Mariners" : 23,
+        "Brewers" : 22,
+        "Rockies" : 21,
+        "City Royals" : 20,
+        "Twins" : 19,
+        "Mets" : 18,
+        "Braves" : 17,
+        "Diamondbacks" : 16,
+        "Orioles" : 15,
+        "Cubs" : 14,
+        "Reds" : 13,  
+        "Nationals" : 12,
+        "Blue Jays" : 11,
+        "Cardinals" : 10,
+        "White Sox" : 9, 
+        "Rangers" : 8, 
+        "Giants" : 7,
+        "Red Sox" : 6, 
+        "Tigers" : 5, 
+        "Angels" : 4, 
+        "Phillies" : 3, 
+        "Yankees" : 2, 
+        "Dodgers" : 1 
+      }
       var payroll = d3.scale.quantile()
         .domain([50000000, 200000000])
         .range([5, 10, 15, 20, 25]);
@@ -104,7 +135,7 @@
                 d3.select('#team-payroll')
                   .html('$' + addCommas(dot.properties.team.payroll).split(',')[0] + ' ' +str);
                 d3.select('#team-payroll-rank')
-                 .html( 10 )
+                 .html( ranks[ dot.properties.team.name ] )
               })
               .on('mouseout', function( dot ){
                 setTimeout(function(){
