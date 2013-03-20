@@ -46,7 +46,7 @@
         fill: #fff;
         stroke-width:4px;
         stroke: #002e5d;
-        opacity: .65;
+        opacity: .75;
       }
       circle.node {
         stroke: #000;
@@ -142,8 +142,9 @@
             d3.selectAll('.park')
               .on('mouseover', function( dot ){
                 d3.select('#team').style('display', 'block');
+                d3.select('#salary').html(' ')
                 d3.select('#payroll')
-                  .html(dot.properties.team.name + '<br/>' + dot.properties.team.payroll);
+                  .html(dot.properties.team.name + '<br/>' + '$' + addCommas(dot.properties.team.payroll));
               })
               .on('mouseout', function( dot ){
                 setTimeout(function(){
@@ -160,6 +161,19 @@
                 d3.select('#salary')
                   .html(dot.properties.team.name + '<br/>' + dot.properties.team.payroll);
               })
+            
+            //add commas
+            function addCommas(nStr) {
+              nStr += '';
+              x = nStr.split('.');
+              x1 = x[0];
+              x2 = x.length > 1 ? '.' + x[1] : '';
+              var rgx = /(\d+)(\d{3})/;
+              while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+              }
+              return x1 + x2;
+            }
             
             d3.selectAll('.park')
               .on('mouseup', function( dot ){
@@ -208,13 +222,14 @@
                       .attr("cy", function(d) { return d.y; })
                       .attr("r", function(d) { return d.children ? payroll(d.team.payroll) : salary(d.salary) })
                       .style("fill", color)
+                      .call(force.drag)
                       .on('click', function(d) {
                         if (d.team && d.team.city) d3.select('#' + d.team.city.replace(' ','')).remove();
                       })
                       .on('mouseover', function( dot ){
                         if ( !dot.team ) {
                           d3.select('#salary')
-                            .html(dot.name +'<br/>'+dot.salary);
+                            .html(dot.name +'<br/>'+ '$' + addCommas(dot.salary));
                         }
                       });
                     
@@ -251,6 +266,7 @@
                   root.salary = recurse(root);
                   return nodes;
                 }
+                
             });
           });
         });
