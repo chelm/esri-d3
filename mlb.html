@@ -86,11 +86,22 @@
         dojo.connect(layer, "onLoad", function(lyr) {
             lyr._render();
 
+            /*d3.selectAll('.park')[0].forEach(function(park){
+              //console.log(park)
+              lyr._element().append('svg:image')
+                .attr('xlink:href', 'http://bearpanther.com/mlb-layer/divisions-web-mercator/images/logos/'+park.id+'.png')
+                .attr('x', '-27')
+                .attr('y', '-27')
+                .attr('class', 'logo')
+                .attr('transform', 'translate('+d3.select(park).attr('cx')+','+d3.select(park).attr('cy')+')')
+                .attr('width', 48)
+                .attr('height', 48);
+            });*/
+
             d3.selectAll('.park')
               .on('mouseover', function( dot ){
                 
                 var img = '<img src="http://bearpanther.com/mlb-layer/divisions-web-mercator/images/logos/' + dot.properties.team.name.replace(/\s/g,'') + '.png"></img>';
-                console.log('img', img)
                 d3.select('#team').style('display', 'block');
                 d3.select('#salary').html(' ');
                 d3.select('#intro').remove();
