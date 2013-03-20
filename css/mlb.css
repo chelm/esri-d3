@@ -36,20 +36,94 @@ body{
   opacity: 0.8;
   color: #002e5d;
 }
-.info {
-  height: 100px;
+
+#team-inner {
+  width:900px;
+  margin:auto;
 }
+
 
 #payroll {
   border-right: 1px solid #FFF;
-  width: 49%;
+  width: 449px;
   float: left;
+  position:relative;
+  display:none;
+}
+
+#payroll-container {
+  width:298px;
+  padding-top:5px;
+  overflow:hidden;
+  padding-bottom:5px;
+  margin-top:-16px;
+  margin-left:150px;
+}
+
+#team-payroll-rank {
+  float: right;
+  width: 40px;
+}
+
+#team-payroll {
+  float:left;
+}
+
+#payroll-titles {
+  width:298px;
+  height:28px;
+}
+
+#rank-title {
+  float: right;
+  width: 40px;
+  font-size:12pt;
+  color:#DDD;
+}
+
+#payroll-title {
+  float:left;
+  font-size:12pt;
+  color:#DDD;
 }
 
 #salary {
-  border-right: 1px solid #FFF;
-  width: 49%;
+  width: 400px;
   float: right;
+  display: none;
+  box-shadow: -10px 0px 26px -19px #444;
+  padding-left: 12px;
+  height: 114px;
+  margin-top: -10px;
+  padding-top: 11px;
+}
+
+#team-name {
+  margin-left:150px;
+  margin-top:-6px;
+}
+
+#team-logo {
+  position:absolute;
+  left:0px;
+  width:150px;
+}
+
+
+#salary-titles {
+  width:298px;
+  height:28px;
+  margin-top:-12px;
+}
+
+#salary-title {
+  float:left;
+  font-size:12pt;
+  color:#DDD;
+}
+
+#player-name {
+  margin-top:-6px;
 }
 
 #info {
