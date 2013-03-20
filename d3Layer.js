@@ -104,7 +104,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
 
     event: function( e ){
-      console.log(e)
       this._paths().on(e.type, e.fn);
     },
 
