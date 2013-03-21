@@ -47,7 +47,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
 
     _project: function(x){
        var p = new esri.geometry.Point( x[0], x[1] );
-       var point = map.toScreen( esri.geometry.geographicToWebMercator( p ) )
+       var point = this._map.toScreen( esri.geometry.geographicToWebMercator( p ) )
        return [ point.x, point.y ];
     },
 
