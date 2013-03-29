@@ -66,8 +66,6 @@
       };
     </script>
    
-    <script src="js/codemirror/lib/codemirror.js"></script>
-    <link rel="stylesheet" href="js/codemirror/lib/codemirror.css"> 
     <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script>
@@ -98,19 +96,10 @@
 
         map.addLayer(layer);
  
-        dojo.connect(layer, "onLoad", function(lyr) {
-          console.log("layer loaded", lyr);
-          lyr._render();
-          var myCodeMirror = CodeMirror(document.getElementById('css'));
-        });
-
-
-    
       });
     </script>
   </head>
   <body class="tundra">
     <div id="map"></div>
-    <div id="css"></div>
   </body>
 </html>

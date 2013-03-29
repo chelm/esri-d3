@@ -112,7 +112,6 @@
         map.addLayer(layer);
  
         dojo.connect(layer, "onLoad", function(lyr) {
-          lyr._render();
           d3.select('#list').selectAll('div')
             .data(lyr.geojson.features)
             .enter().append('div')

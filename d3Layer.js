@@ -9,7 +9,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this.inherited(arguments); 
 
       this.url = url;
-      //this.id = options.id || ( Math.round( Math.random() * 100000 ).toString( 16 ) ) + ( new Date() ).getTime().toString(16);
 
       this.type = options.type || 'path';
 
@@ -22,8 +21,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this._path = options.path || d3.geo.path();
       this.path = this._path.projection(dojo.hitch(this,self._project));
     
-      // load features
-      this._load();
     },
 
     _load: function(){
@@ -32,13 +29,17 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
         self.geojson = geojson;
         self.bounds = d3.geo.bounds( self.geojson );
         self.loaded = true;
-        // TODO the onLoad event fires too soon, have to wait until the DOM is created
-        setTimeout(function(){ 
-          self.onLoad( self );
-        }, 1000);
+        self._render();
+        self.onLoad( self );
       });
 
-    }, 
+    },
+
+    // called once the layer's been added to the map
+    _setMap: function(){ 
+      this._load();
+      return this.inherited( arguments );
+    },
 
     _bind: function(map){
       this._connects = [];
@@ -54,7 +55,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     _render: function(){
       var self = this;
       var p = this._paths();
-    
       if ( this.type == 'circle' ) {
 
         p.data( this.geojson.features )
