@@ -105,14 +105,13 @@
         
         layer = new modules.d3Layer('us-states.json', {
           attrs: [
-            { key: 'id', value: function(d){ return normalizeName(d.properties.name); }},
-            { key: 'class', value: function(d){ return 'state ' + normalizeName(d.properties.name); }}
+            { key: 'class', value: function(d){ return 'state ' + normalizeName(d.properties.name); }},
+            { key: 'id', value: function(d){ return normalizeName(d.properties.name); }}
           ]
         });
         map.addLayer(layer);
  
         dojo.connect(layer, "onLoad", function(lyr) {
-          lyr._render();
           d3.select('#list').selectAll('div')
             .data(lyr.geojson.features)
             .enter().append('div')
@@ -122,7 +121,9 @@
 
           // This is kind of a cool way to do it 
           d3.selectAll('.state')
+            .attr('id', function(d){ return normalizeName(d.properties.name); })
             .on('mouseover', function(){
+              //console.log(this.id);
               d3.select('body').append('style')
                 .attr('id', this.id.replace(/state/,'')+'_style')
                 .text( '.'+ this.id.replace(/state/,'') + '{ fill: #F08; font-size: 1.2em; color: #F08; }');
