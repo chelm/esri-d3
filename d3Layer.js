@@ -11,6 +11,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       this.url = url;
 
       this.type = options.type || 'path';
+      this.selector = this.type;
 
       if (options.projection) this._project = options.projection;
      
@@ -59,24 +60,22 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
 
         p.data( this.geojson.features )
           .enter().append( this.type )
-          .attr('class', this.id)
           .attr("cx", function(d, i) { return self._project(d.geometry.coordinates)[0]; })
           .attr("cy", function(d, i) { return self._project(d.geometry.coordinates)[1]; })
           .attr('r', 10)
-            .on('click', function(d) {
-              self.select(d, this)
-            })
-            .on('mouseover', function(d){
-              self.hover(d, this);
-            })
-            .on('mouseout', function(d){
-              self.exit(d, this);
-            })
+          .on('click', function(d) {
+            self.select(d, this)
+          })
+          .on('mouseover', function(d){
+            self.hover(d, this);
+          })
+          .on('mouseout', function(d){
+            self.exit(d, this);
+          });
       } else {
 
         p.data( this.geojson.features )
           .enter().append( this.type )
-          .attr('class', this.id)
           .attr('d', this.path);
       }  
 
@@ -85,13 +84,21 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       });
 
       this._attrs.forEach(function( s, i ) {
-        
         self.attr(s);
       });
 
       this._events.forEach(function( s, i ) {
         self.event(s);
       });
+
+      // assign a class to each feature element that is the ID of the layer
+      // this makes it possible to select all primary features, and have secondary ones
+      this._paths().attr('class', function(d, el) { 
+        return d3.select(this).attr('class') + " " + self.id;
+      });
+    
+      // selector needs to respect the layer id classname we just gave each element
+      this.selector += "."+this.id;
 
       this._bind();
     },
@@ -101,14 +108,6 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
 
     attr: function( a ){
-      /*if (a.key == "class"){
-        this._paths().attr('class', function(d) { 
-          var val = d3.select(this).attr('class') + " " + a.value;
-          return val; 
-        });
-      } else {
-        this._paths().attr(a.key, a.value);
-      }*/
       this._paths().attr(a.key, a.value);
     },
 
@@ -131,8 +130,8 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       return d3.select("g#" + this.id + "_layer");
     },
 
-    _paths: function(){
-      return this._element().selectAll( this.type+"."+this.id );
+    _paths: function( selector ){
+      return this._element().selectAll( selector || this.selector );
     },
     
     hover: function() {},
