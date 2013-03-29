@@ -85,6 +85,7 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
       });
 
       this._attrs.forEach(function( s, i ) {
+        
         self.attr(s);
       });
 
@@ -100,14 +101,15 @@ dojo.declare("modules.d3Layer", esri.layers.GraphicsLayer, {
     },
 
     attr: function( a ){
-      if (a.key == "class"){
+      /*if (a.key == "class"){
         this._paths().attr('class', function(d) { 
           var val = d3.select(this).attr('class') + " " + a.value;
           return val; 
         });
       } else {
         this._paths().attr(a.key, a.value);
-      }
+      }*/
+      this._paths().attr(a.key, a.value);
     },
 
     event: function( e ){
