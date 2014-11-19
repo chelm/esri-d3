@@ -6,14 +6,14 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
     <title>Esri <3 d3js</title>
     <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/tundra/tundra.css">
-    <link rel="stylesheet" href="http://servicesbeta.esri.com/jsapi/arcgis/3.3/js/esri/css/esri.css" />
+    <link rel="stylesheet" href="http://js.arcgis.com/3.11/esri/css/esri.css">
     <style type="text/css">
-      html, body { 
+      html, body {
         height: 100%; width: 100%;
         margin: 0; padding: 0;
-      } 
+      }
       body{
-        background-color: #fff; 
+        background-color: #fff;
         font-family: sans-serif;
       }
 
@@ -30,7 +30,7 @@
         left:0px;
         width: 200px;
         height: 100%;
-      } 
+      }
 
       .state {
         fill: #555;
@@ -41,27 +41,27 @@
 
 
       path[data-num = "0"]{
-        fill: rgb(255, 255, 204);         
-      } 
+        fill: rgb(255, 255, 204);
+      }
 
       path[data-num = "1"]{
-        fill: rgb(199, 233, 180);         
+        fill: rgb(199, 233, 180);
       }
 
       path[data-num = "2"]{
-        fill: rgb(65, 182, 196);         
+        fill: rgb(65, 182, 196);
       }
 
       path[data-num = "3"]{
-        fill: rgb(29, 145, 192);     
+        fill: rgb(29, 145, 192);
       }
-    
+
       path[data-num = "4"]{
-        fill: rgb(34, 94, 168);         
+        fill: rgb(34, 94, 168);
       }
 
       path[data-num = "5"]{
-        fill: rgb(12, 44, 132);         
+        fill: rgb(12, 44, 132);
       }
 
       .over {
@@ -80,89 +80,112 @@
         }]
       };
     </script>
-    
-    <script src="http://servicesbeta.esri.com/jsapi/arcgis/3.2/"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-      
-      <script>
-      function normalizeName(n) { return n.replace(/ /g,""); };
 
-      dojo.require("esri.map");
-      dojo.require("modules.d3Layer");
-      dojo.ready(function(){
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://js.arcgis.com/3.6/"></script>
+
+      <script>
+      function normalizeName(n) {
+        return n.replace(/ /g, "");
+      };
+
+      require([
+        "esri/map",
+        "modules/d3Layer",
+        "dojo/parser",
+        "dojo/domReady!"
+      ], function(
+        Map,
+        d3Layer,
+        parser) {
+
+        parser.parse();
 
         classes = d3.scale.ordinal()
-          .domain(d3.range([0,10,20,30,40,50]))
-          .range([1,2,3,4,5]);
-  
-        var initExtent = new esri.geometry.Extent({"xmin":-152,"ymin":10,"xmax":-60,"ymax":70,"spatialReference":{"wkid":4326}});
-        map = new esri.Map("map",{
-          extent:esri.geometry.geographicToWebMercator(initExtent)
+          .domain(d3.range([0, 10, 20, 30, 40, 50]))
+          .range([1, 2, 3, 4, 5]);
+
+        map = new Map("map", {
+          center: [-98, 39],
+          zoom: 4,
+          basemap: "gray"
         });
 
-        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");
-        map.addLayer(basemap); 
-        
-        layer = new modules.d3Layer('us-states.json', {
-          attrs: [
-            { key: 'class', value: function(d){ return 'state ' + normalizeName(d.properties.name); }},
-            { key: 'id', value: function(d){ return normalizeName(d.properties.name); }}
-          ]
+        layer = new d3Layer('us-states.json', {
+          attrs: [{
+            key: 'class',
+            value: function(d) {
+              return 'state ' + normalizeName(d.properties.name);
+            }
+          }, {
+            key: 'id',
+            value: function(d) {
+              return normalizeName(d.properties.name);
+            }
+          }]
         });
         map.addLayer(layer);
- 
-        dojo.connect(layer, "onLoad", function(lyr) {
+
+        layer.on("load", function(evt) {
+          var lyr = evt.layer;
           d3.select('#list').selectAll('div')
             .data(lyr.geojson.features)
             .enter().append('div')
-              .attr('id', function(d){ return 'state' + normalizeName(d.properties.name); })
-              .attr('class', function(d){ return 'state ' + normalizeName(d.properties.name); })
-              .text(function(d){ return d.properties.name; })
+            .attr('id', function(d) {
+              return 'state' + normalizeName(d.properties.name);
+            })
+            .attr('class', function(d) {
+              return 'state ' + normalizeName(d.properties.name);
+            })
+            .text(function(d) {
+              return d.properties.name;
+            })
 
-          // This is kind of a cool way to do it 
+          // This is kind of a cool way to do it
           d3.selectAll('.state')
-            .attr('id', function(d){ return normalizeName(d.properties.name); })
-            .on('mouseover', function(){
+            .attr('id', function(d) {
+              return normalizeName(d.properties.name);
+            })
+            .on('mouseover', function() {
               //console.log(this.id);
               d3.select('body').append('style')
-                .attr('id', this.id.replace(/state/,'')+'_style')
-                .text( '.'+ this.id.replace(/state/,'') + '{ fill: #F08; font-size: 1.2em; color: #F08; }');
+                .attr('id', this.id.replace(/state/, '') + '_style')
+                .text('.' + this.id.replace(/state/, '') + '{ fill: #F08; font-size: 1.2em; color: #F08; }');
             })
-            .on('mouseout', function(){
-              d3.select('#'+this.id.replace(/state/,'')+'_style').remove();
+            .on('mouseout', function() {
+              d3.select('#' + this.id.replace(/state/, '') + '_style').remove();
             })
 
           /*d3.selectAll('.state')
             .on('mouseover', function(){
-              d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
+              d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){
                 return 'over state ' + normalizeName(d.properties.name); });
             })
             .on('mouseout', function(){
-              d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){ 
+              d3.selectAll('.' + this.id.replace(/state/,'')).attr('class', function(d){
                 return 'state ' + normalizeName(d.properties.name); });
             })*/
-              
         });
       });
 
-      function grow(){
-        layer._paths().attr('data-val', function(d){
-          var el = d3.select('path#'+this.id);
-          try { 
+      function grow() {
+        layer._paths().attr('data-val', function(d) {
+          var el = d3.select('path#' + this.id);
+          try {
             var v = (el) ? el.attr('data-val') : null;
-          } catch(e) {
+          } catch (e) {
             var v = false;
           }
           if (v) {
-            var nval = parseInt(v) + Math.floor(Math.random()*10);
+            var nval = parseInt(v) + Math.floor(Math.random() * 10);
           } else {
-            var nval = Math.floor(Math.random()*10);
+            var nval = Math.floor(Math.random() * 10);
           }
-          el.attr('data-num', classes( nval ));
+          el.attr('data-num', classes(nval));
           return nval;
         });
-
       }
+
     </script>
   </head>
   <body class="tundra">
