@@ -7,12 +7,12 @@
     <title>Esri <3 d3js</title>
     <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
     <style type="text/css">
-      html, body { 
+      html, body {
         height: 100%; width: 100%;
         margin: 0; padding: 0;
-      } 
+      }
       body{
-        background-color: #fff; overflow:hidden; 
+        background-color: #fff; overflow:hidden;
         font-family: sans-serif;
       }
       path {
@@ -25,7 +25,7 @@
         position:absolute;
         width: 100%;
         height: 100%;
-      } 
+      }
 
       path[data-cat="1"]{
         fill: rgb(247,251,255);
@@ -65,9 +65,10 @@
         }]
       };
     </script>
-   
-    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
+
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://js.arcgis.com/3.6/"></script>
+
     <script>
 
       var cat = d3.scale.quantile()
@@ -76,26 +77,31 @@
 
       var path = d3.geo.path();
 
-      dojo.require("esri.map");
-      dojo.require("modules.d3Layer");
-      dojo.ready(function(){
-  
-        var initExtent = new esri.geometry.Extent({"xmin":-132,"ymin":20,"xmax":-60,"ymax":50,"spatialReference":{"wkid":4326}});
-        map = new esri.Map("map",{
-          extent:esri.geometry.geographicToWebMercator(initExtent)
+      require([
+        "esri/map",
+        "modules/d3Layer",
+        "dojo/parser",
+        "dojo/domReady!"
+      ], function(
+        Map,
+        d3Layer,
+        parser) {
+
+        parser.parse();
+        map = new Map("map", {
+          center: [-98, 39],
+          zoom: 4,
+          basemap: "gray"
         });
 
-        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");
-        map.addLayer(basemap); 
-        
-        layer = new modules.d3Layer('us-counties.json', {
+        layer = new d3Layer('us-counties.json', {
           attrs: [
             { key: 'data-cat', value: function(d){ console.log(path.area(d)); return Math.round(cat(path.area(d))); } }
           ]
         });
 
         map.addLayer(layer);
- 
+
       });
     </script>
   </head>
