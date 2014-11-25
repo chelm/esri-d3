@@ -1,30 +1,34 @@
 define([
-  "dojo/_base/declare",
-  "dojo/_base/lang",
-  "dojo/_base/array",
-  "dojo/on",
-  "esri/layers/GraphicsLayer",
-  "esri/geometry/Point",
-  "esri/geometry/webMercatorUtils",
-  "http://d3js.org/d3.v3.js"
+    "dojo/_base/declare",
+    "dojo/_base/connect",
+    "dojo/_base/lang",
+    "dojo/_base/array",
+    "dojo/on",
+
+    "esri/geometry/Point",
+    "esri/geometry/webMercatorUtils",
+    "esri/layers/GraphicsLayer",
+
+    "http://d3js.org/d3.v3.js"
   ],
   function(
     declare,
+    connect,
     lang,
     array,
     on,
-    GraphicsLayer,
+
     Point,
     webMercatorUtils,
-    d3 ) {
+    GraphicsLayer,
 
-    var d3Layer = declare("modules.d3Layer", [ GraphicsLayer ], {
+    d3) {
+
+    var d3Layer = declare("modules.d3Layer", [GraphicsLayer], {
 
       constructor: function(url, options) {
         var self = this;
-        this.inherited(arguments);
         this.url = url;
-
         this.type = options.type || 'path';
         this.selector = this.type;
 
@@ -37,33 +41,34 @@ define([
         this._path = options.path || d3.geo.path();
         this.path = this._path.projection(lang.hitch(this, self._project));
 
+        this._zoomEnd = null;
       },
 
       _load: function() {
         var self = this;
-        d3.json(this.url, function(geojson) {
+        d3.json(self.url, function(geojson) {
           self.geojson = geojson;
           self.bounds = d3.geo.bounds(self.geojson);
           self.loaded = true;
           self._render();
           self.onLoad(self);
         });
-
       },
 
-      // called once the layer's been added to the map
-      _setMap: function() {
+      //called once the layer's been added to the map
+      _setMap: function(map, surface) {
         this._load();
+
+        this._zoomEnd = map.on("zoom-end", lang.hitch(this, function() {
+          this._reset();
+        }));
         return this.inherited(arguments);
       },
 
-      _bind: function(map) {
-        //this._connects = [];
-        //this._connects.push( dojo.connect( this._map, "onZoomEnd", this, this._reset ) );
-        this._map.on("zoom-end", lang.hitch(this, function() {
-            this._reset();
-          })
-        );
+      _unsetMap: function() {
+        this.inherited(arguments);
+        //to do: upgrade to 'on' style
+        connect.disconnect(this._zoomEnd);
       },
 
       _project: function(x) {
@@ -122,8 +127,6 @@ define([
 
         // selector needs to respect the layer id classname we just gave each element
         this.selector += "." + this.id;
-
-        this._bind();
       },
 
       style: function(s) {
@@ -131,7 +134,17 @@ define([
       },
 
       attr: function(a) {
-        this._paths().attr(a.key, a.value);
+        /* at, 3.9+, this method fires with 'data-suspended' as the sole argument before the graphics have drawn for the first time
+
+        it seems like it would be sufficient to check layer.suspended, but it is returning false
+
+        https://developers.arcgis.com/javascript/jsapi/layer-amd.html#suspended
+        */
+        if (a != "data-suspended" || this.suspended) {
+          this._paths().attr(a.key, a.value);
+        }
+
+        return this.inherited(arguments);
       },
 
       event: function(e) {
@@ -166,4 +179,4 @@ define([
       select: function() {}
     });
     return d3Layer;
-});
+  });
