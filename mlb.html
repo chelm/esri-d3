@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
     <title>Esri <3 d3js</title>
-    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css" />
+    <link rel="stylesheet" href="http://js.arcgis.com/3.11/esri/css/esri.css" />
     <link rel="stylesheet" href="css/bootstrap.css"></link>
     <link rel="stylesheet" href="css/mlb.css"></link>
     <script>
@@ -19,7 +19,7 @@
     </script>
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://js.arcgis.com/3.6/"></script>
+    <script src="http://js.arcgis.com/3.11/"></script>
 
     <script>
       var ranks = {
@@ -63,6 +63,8 @@
         .range([5, 10, 15, 20]);
 
       var forces = {};
+      var map;
+      var layer;
 
       require([
         "esri/map",
@@ -97,8 +99,10 @@
             key: 'class',
             value: 'park'
           }],
-          type: 'circle'
+          type: 'circle',
+          map: map
         });
+
         map.addLayer(layer);
 
         map.on("zoom-end", function() {
@@ -117,8 +121,6 @@
         });
 
         layer.on("load", function(evt) {
-          evt.layer._render();
-
           d3.selectAll('.park')
             .on('mouseover', function(dot) {
 
@@ -331,7 +333,7 @@
       <div id="team-inner">
         <div id="intro">
           <span>
-            <span style="color: #d50032">MLB</span> payrolls projected <br /> to exceed <span class="number">3 billion</span> dollars in 2013.
+            <span style="color: #d50032">MLB</span> payrolls exceeded <br /><span class="number">3 billion</span> dollars in 2013.
           </span>
         </div>
         <div id="payroll" class="info">
