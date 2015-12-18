@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
     <title>Esri <3 d3js</title>
-    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
     <style type="text/css">
-      html, body { 
+      html, body {
         height: 100%; width: 100%;
         margin: 0; padding: 0;
-      } 
+      }
       body{
-        background-color: #fff; overflow:hidden; 
+        background-color: #fff; overflow:hidden;
         font-family: sans-serif;
       }
       path {
@@ -31,7 +31,7 @@
         position:absolute;
         width: 100%;
         height: 100%;
-      } 
+      }
     </style>
     <script>
       var dojoConfig = {
@@ -42,36 +42,43 @@
         }]
       };
     </script>
-   
-    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://js.arcgis.com/3.13/"></script>
     <script>
-      dojo.require("esri.map");
-      dojo.require("modules.d3Layer");
-      dojo.ready(function(){
-  
-        var initExtent = new esri.geometry.Extent({"xmin":-132,"ymin":20,"xmax":-60,"ymax":50,"spatialReference":{"wkid":4326}});
-        map = new esri.Map("map",{
-          extent:esri.geometry.geographicToWebMercator(initExtent)
+
+      require([
+        "esri/map",
+        "modules/d3Layer",
+        "dojo/parser",
+        "dojo/domReady!"
+      ], function(
+        Map,
+        d3Layer,
+        parser) {
+
+        parser.parse();
+
+        map = new Map("map", {
+          center: [-98, 39],
+          zoom: 4,
+          basemap: "gray"
         });
 
-        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");
-        map.addLayer(basemap); 
-        
-        layer = new modules.d3Layer('us-states.json', {
+        layer = new d3Layer('us-states.json', {
           styles: [
             //{ key: 'fill', value: '#555'}
           ],
-          attrs: [
-            { key: 'id', value: function(d){ return d.properties.name; }}
-          ] 
+          attrs: [{
+            key: 'id',
+            value: function(d) {
+              return d.properties.name;
+            }
+          }]
         });
         map.addLayer(layer);
-    
       });
     </script>
   </head>
-  <body class="tundra">
+  <body>
     <div id="map"></div>
   </body>
 </html>
