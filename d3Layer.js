@@ -1,30 +1,24 @@
 define([
     "dojo/_base/declare",
-    "dojo/_base/connect",
     "dojo/_base/lang",
     "dojo/_base/array",
     "dojo/on",
-
     "esri/geometry/Point",
     "esri/geometry/webMercatorUtils",
     "esri/layers/GraphicsLayer",
-
-    "http://d3js.org/d3.v3.js"
+    "http://d3js.org/d3.v3.min.js"
   ],
   function(
     declare,
-    connect,
     lang,
     array,
     on,
-
     Point,
     webMercatorUtils,
     GraphicsLayer,
-
     d3) {
 
-    var d3Layer = declare("modules.d3Layer", [GraphicsLayer], {
+    var d3Layer = declare("d3Layer", [GraphicsLayer], {
 
       constructor: function(url, options) {
         var self = this;
@@ -40,8 +34,6 @@ define([
 
         this._path = options.path || d3.geo.path();
         this.path = this._path.projection(lang.hitch(this, self._project));
-
-        this._zoomEnd = null;
       },
 
       _load: function() {
@@ -67,8 +59,7 @@ define([
 
       _unsetMap: function() {
         this.inherited(arguments);
-        //to do: upgrade to 'on' style
-        connect.disconnect(this._zoomEnd);
+        this._zoomEnd.remove();
       },
 
       _project: function(x) {

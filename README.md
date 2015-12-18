@@ -23,7 +23,7 @@ This shows how we can data-* attributes on our elements as a way to assign categ
 ### Cross-Interaction
 This example adds some interaction to each state. The point is to show an alternative CSS based approach to cross data selection and interaction.
 
-[http://chelm.github.com/esri-d3/css.html](http://chelm.github.com/esri-d3/css.html)
+[http://chelm.github.com/esri-d3/css-sample.html](http://chelm.github.com/esri-d3/css-sample.html)
 
 ## Usage
 
